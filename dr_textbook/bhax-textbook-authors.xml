@@ -1,0 +1,23 @@
+<authorgroup xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <author>
+        <personname>
+            <surname>Dékány</surname>
+            <firstname>Róbert Zsolt</firstname>        
+        </personname>    
+        <affiliation>
+            <jobtitle>Egyetemi hallgató</jobtitle>
+            <orgname>Debreceni Egyetem</orgname>
+            <orgdiv>Informatikai Kar</orgdiv>
+            <address>
+                <email>dekany.r123@gmail.com</email>
+            </address>
+        </affiliation>
+        <address>
+            <street>Marjalaki utca 54.</street>
+            <city>Kisújszállás</city>
+            <postcode>5310</postcode>
+            <country>Magyarország</country>
+            <email>dekany.r123@gmail.com</email>
+        </address>
+    </author>    
+</authorgroup>
