@@ -10,8 +10,73 @@
         <para>
            
         </para>
+        <programlisting language="c"><![CDATA[
+    #include <stdio.h>
+    #include <stdlib.h>
+
+    int
+    main ()
+    {
+        int nr = 5;
+        double **tm;
+        
+        printf("%p\n", &tm);
+        
+        if ((tm = (double **) malloc (nr * sizeof (double *))) == NULL)
+        {
+            return -1;
+        }
+
+        printf("%p\n", tm);
+        
+        for (int i = 0; i < nr; ++i)
+        {
+            if ((tm[i] = (double *) malloc ((i + 1) * sizeof (double))) == NULL)
+            {
+                return -1;
+            }
+
+        }
+
+        printf("%p\n", tm[0]);    
+        
+        for (int i = 0; i < nr; ++i)
+            for (int j = 0; j < i + 1; ++j)
+                tm[i][j] = i * (i + 1) / 2 + j;
+
+        for (int i = 0; i < nr; ++i)
+        {
+            for (int j = 0; j < i + 1; ++j)
+                printf ("%f, ", tm[i][j]);
+            printf ("\n");
+        }
+
+        tm[3][0] = 42.0;
+        (*(tm + 3))[1] = 43.0;	// mi van, ha itt hiányzik a külső ()
+        *(tm[3] + 2) = 44.0;
+        *(*(tm + 3) + 3) = 45.0;
+
+        for (int i = 0; i < nr; ++i)
+        {
+            for (int j = 0; j < i + 1; ++j)
+                printf ("%f, ", tm[i][j]);
+            printf ("\n");
+        }
+
+        for (int i = 0; i < nr; ++i)
+            free (tm[i]);
+
+        free (tm);
+
+        return 0;
+    }
+
+                ]]></programlisting>
         <para>
-            Megoldás videó:
+            Csak a nem nulla értékeket tároljuk, mivel a háromszöghöz felesleges ezeket az értékeket mutatni, így nem négyzet alakot kapunk.
+            Egy 'i' sornak 'i+1' oszlopot foglalunk le.
+            Elsőnek deklaráljuk a változóinkat. 'nr'-ben a háromszögmátrix sorainak a kívánt számát állítjuk le. '**tm' egy mutató, ami a tömbünk első elemére mutat, ami a double* mutatokra, tehát a tömb soraira mutat.
+    
         </para>
         <para>
             Megoldás forrása:                
@@ -25,21 +90,137 @@
         <para>
             Írj egy EXOR titkosítót C-ben!
         </para>
+        <para>Az EXOR titkosítás egy egyszerű titkosítási eljárás. 
+        Lényege, hogy a titosítandó szöveg mellé rendelünk egy titkosító kulcsot (szöveg), majd ezzel végezzük el a titkosítást. Az alábbi C kód az EXOR titkosító algoritmus.</para>
+        <programlisting language="c"><![CDATA[
+    #include <stdio.h>
+    #include <unistd.h>
+    #include <string.h>
+
+    #define MAX_KULCS 100
+    #define BUFFER_MERET 256
+
+
+    int main (int argc, char **argv)
+    {
+
+        char kulcs[MAX_KULCS];
+        char buffer[BUFFER_MERET];
+
+        int kulcs_index = 0;
+        int olvasott_bajtok = 0;
+
+        int kulcs_meret = strlen (argv[1]);
+        strncpy (kulcs, argv[1], MAX_KULCS);
+
+        while ((olvasott_bajtok = read (0, (void *) buffer, BUFFER_MERET)))
+        {
+
+            for (int i = 0; i < olvasott_bajtok; ++i)
+            {
+
+            buffer[i] = buffer[i] ^ kulcs[kulcs_index];
+            kulcs_index = (kulcs_index + 1) % kulcs_meret;
+
+            }
+
+            write (1, buffer, olvasott_bajtok);
+        }
+    }
+                ]]></programlisting>
         <para>
-            Megoldás videó:
+            Működése:
         </para>
         <para>
-            Megoldás forrása:                
+            Elsőként a kódban felveszünk 2 konstans változót. A <function>MAX_KULCS 100</function> lesz a kulcsunk maximális mérete, illetve <function>BUFFER_MERET 256</function> a maximálisan beolvasható stringek száma.
+            Ezek után a <function>main()</function> függvénybe valósul meg a titkosító algoritmus.
+            El van tárolva a kulcs illetve a bufferbe a szöveg. Ezután a kulcs méretét vizsgáljuk a <function>strncpy</function> függvényel. Ha túl nagy a kulcs mérete, akkor lecípi belőle a szükséges 100 karakternyi részt.
         </para>
+        <programlisting language="c"><![CDATA[
+    #include <stdio.h>
+    #include <unistd.h>
+    #include <string.h>
+
+    #define MAX_KULCS 100
+    #define BUFFER_MERET 256
+
+
+    int main (int argc, char **argv)
+    {
+
+        char kulcs[MAX_KULCS];
+        char buffer[BUFFER_MERET];
+
+        int kulcs_index = 0;
+        int olvasott_bajtok = 0;
+
+        int kulcs_meret = strlen (argv[1]);
+        strncpy (kulcs, argv[1], MAX_KULCS);
+                ]]></programlisting>
         <para>
-            Tanulságok, tapasztalatok, magyarázat...
-        </para>            
+            Továbbiakban egy while ciklus segítségével folyamatosan olvassuk be a bájtokat a titkosítandó szöveges állományból. A magban a lényegi dolgok történnek. 
+            A kiolvasott bájtot össze EXOR-ozza a kulcs adott bájtja segítségével. Az EXOR után a kulcsindexet növeljük. A titkosított bájtokat egy bufferbe olvassuk, majd kiirjuk egy output file-ba.
+        </para>
+        <programlisting language="c"><![CDATA[
+        while ((olvasott_bajtok = read (0, (void *) buffer, BUFFER_MERET)))
+        {
+
+            for (int i = 0; i < olvasott_bajtok; ++i)
+            {
+
+            buffer[i] = buffer[i] ^ kulcs[kulcs_index];
+            kulcs_index = (kulcs_index + 1) % kulcs_meret;
+
+            }
+
+            write (1, buffer, olvasott_bajtok);
+        }
+    }
+                ]]></programlisting>
     </section>        
     <section>
         <title>Java EXOR titkosító</title>
         <para>
             Írj egy EXOR titkosítót Java-ban!
         </para>
+        <programlisting language="java"><![CDATA[
+        public class ExorTitkosító
+        {
+            public ExorTitkosító(String kulcsSzöveg,
+                java.io.InputStream bejövőCsatorna,
+                java.io.OutputStream kimenőCsatorna)
+                throws java.io.IOException {
+
+            byte [] kulcs = kulcsSzöveg.getBytes();
+            byte [] buffer = new byte[256];
+            int kulcsIndex = 0;
+            int olvasottBájtok = 0;
+
+            while((olvasottBájtok =
+                    bejövőCsatorna.read(buffer)) != -1) {
+
+                for(int i=0; i<olvasottBájtok; ++i) {
+                    buffer[i] = (byte)(buffer[i] ^ kulcs[kulcsIndex]);
+                    kulcsIndex = (kulcsIndex+1) % kulcs.length;
+            }
+            
+            kimenőCsatorna.write(buffer, 0, olvasottBájtok);
+
+            }
+        }
+		public static void main(String[] args)
+        {
+			try
+            {
+				new ExorTitkosító(args[0], System.in, System.out);
+			}
+            catch(java.io.IOException e)
+            {
+				e.printStackTrace();
+			}
+		}
+
+                ]]></programlisting>
         <para>
             Megoldás videó:
         </para>
@@ -48,22 +229,172 @@
         </para>
         <para>
             Tanulságok, tapasztalatok, magyarázat...
-        </para>            
+        </para> <programlisting language="java"><![CDATA[
+        public class ExorTitkosító
+        {
+            public ExorTitkosító(String kulcsSzöveg,
+                java.io.InputStream bejövőCsatorna,
+                java.io.OutputStream kimenőCsatorna)
+                throws java.io.IOException {
+
+            byte [] kulcs = kulcsSzöveg.getBytes();
+            byte [] buffer = new byte[256];
+            int kulcsIndex = 0;
+            int olvasottBájtok = 0;
+
+            while((olvasottBájtok =
+                    bejövőCsatorna.read(buffer)) != -1) {
+
+                for(int i=0; i<olvasottBájtok; ++i) {
+                    buffer[i] = (byte)(buffer[i] ^ kulcs[kulcsIndex]);
+                    kulcsIndex = (kulcsIndex+1) % kulcs.length;
+            }
+            
+            kimenőCsatorna.write(buffer, 0, olvasottBájtok);
+
+            }
+        }
+		public static void main(String[] args)
+        {
+			try
+            {
+				new ExorTitkosító(args[0], System.in, System.out);
+			}
+            catch(java.io.IOException e)
+            {
+				e.printStackTrace();
+			}
+		}
+
+                ]]></programlisting>           
     </section>        
     <section>
         <title>C EXOR törő</title>
         <para>
             Írj egy olyan C programot, amely megtöri az első feladatban előállított titkos szövegeket!
         </para>
+        <programlisting language="c"><![CDATA[
+        #define MAX_TITKOS 4096
+        #define OLVASAS_BUFFER 256
+        #define KULCS_MERET 8
+        #define _GNU_SOURCE
+
+        #include <stdio.h>
+        #include <unistd.h>
+        #include <string.h>
+
+        double
+        atlagos_szohossz (const char *titkos, int titkos_meret)
+        {
+        int sz = 0;
+        for (int i = 0; i < titkos_meret; ++i)
+            if (titkos[i] == ' ')
+            ++sz;
+
+        return (double) titkos_meret / sz;
+        }
+
+        int
+        tiszta_lehet (const char *titkos, int titkos_meret)
+        {
+        // a tiszta szoveg valszeg tartalmazza a gyakori magyar szavakat
+        // illetve az átlagos szóhossz vizsgálatával csökkentjük a
+        // potenciális töréseket
+
+        double szohossz = atlagos_szohossz (titkos, titkos_meret);
+
+        return szohossz > 6.0 && szohossz < 9.0
+            && strcasestr (titkos, "hogy") && strcasestr (titkos, "nem")
+            && strcasestr (titkos, "az") && strcasestr (titkos, "ha");
+
+        }
+
+        void
+        exor (const char kulcs[], int kulcs_meret, char titkos[], int titkos_meret)
+        {
+
+        int kulcs_index = 0;
+
+        for (int i = 0; i < titkos_meret; ++i)
+            {
+
+            titkos[i] = titkos[i] ^ kulcs[kulcs_index];
+            kulcs_index = (kulcs_index + 1) % kulcs_meret;
+
+            }
+
+        }
+
+        int
+        exor_tores (const char kulcs[], int kulcs_meret, char titkos[],
+                int titkos_meret)
+        {
+
+        exor (kulcs, kulcs_meret, titkos, titkos_meret);
+
+        return tiszta_lehet (titkos, titkos_meret);
+
+        }
+
+        int
+        main (void)
+        {
+
+        char kulcs[KULCS_MERET];
+        char titkos[MAX_TITKOS];
+        char *p = titkos;
+        int olvasott_bajtok;
+
+        // titkos fajt berantasa
+        while ((olvasott_bajtok =
+            read (0, (void *) p,
+                (p - titkos + OLVASAS_BUFFER <
+                MAX_TITKOS) ? OLVASAS_BUFFER : titkos + MAX_TITKOS - p)))
+            p += olvasott_bajtok;
+
+        // maradek hely nullazasa a titkos bufferben  
+        for (int i = 0; i < MAX_TITKOS - (p - titkos); ++i)
+            titkos[p - titkos + i] = '\0';
+
+        // osszes kulcs eloallitasa
+        for (int ii = '0'; ii <= '9'; ++ii)
+            for (int ji = '0'; ji <= '9'; ++ji)
+            for (int ki = '0'; ki <= '9'; ++ki)
+            for (int li = '0'; li <= '9'; ++li)
+            for (int mi = '0'; mi <= '9'; ++mi)
+                for (int ni = '0'; ni <= '9'; ++ni)
+                for (int oi = '0'; oi <= '9'; ++oi)
+                for (int pi = '0'; pi <= '9'; ++pi)
+                {
+                    kulcs[0] = ii;
+                    kulcs[1] = ji;
+                    kulcs[2] = ki;
+                    kulcs[3] = li;
+                    kulcs[4] = mi;
+                    kulcs[5] = ni;
+                    kulcs[6] = oi;
+                    kulcs[7] = pi;
+
+                    if (exor_tores (kulcs, KULCS_MERET, titkos, p - titkos))
+                    printf
+                    ("Kulcs: [%c%c%c%c%c%c%c%c]\nTiszta szoveg: [%s]\n",
+                    ii, ji, ki, li, mi, ni, oi, pi, titkos);
+
+                    // ujra EXOR-ozunk, igy nem kell egy masodik buffer  
+                    exor (kulcs, KULCS_MERET, titkos, p - titkos);
+                }
+
+        return 0;
+        }
+                ]]></programlisting>
         <para>
-            Megoldás videó:
+            Az exor törő minden esetben egy karakter sorozatból megadott kulcs alapján próbálja visszafejteni a szöveget.
+            Bruteforce módszert használva minden lehetséges kombinációval kipróbálva töri fel. A tiszta szöveg előállítását is egy algoritmus végzi, ami egyes szavak alapján megpróbál értelmes szöveget visszafejteni.
         </para>
         <para>
-            Megoldás forrása:                
-        </para>
-        <para>
-            Tanulságok, tapasztalatok, magyarázat...
-        </para>            
+            További magyarázat, kidolgozás (később):
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis delectus temporibus obcaecati eveniet saepe expedita dolorem ratione natus veniam asperiores, commodi pariatur iusto accusamus ut sed unde. Magni, reprehenderit voluptates. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex illo officia asperiores est itaque vel totam, quia voluptatibus dolores ducimus inventore alias id, nesciunt ab possimus harum quis error quod!
+        </para>       
     </section>        
     <section>
         <title>Neurális OR, AND és EXOR kapu</title>
