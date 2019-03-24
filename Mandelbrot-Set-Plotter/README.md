@@ -6,7 +6,7 @@ Includes for SFML:
 
 Build command:  
     g++ MandelbrotSetPlotter.cpp -lsfml-window -lsfml-system -lsfml-graphics  -fopenmp -O2
+
 Run command:
     g++ -o mbhzoom MandelbrotSetPlotter.cpp -lsfml-window -lsfml-system -lsfml-graphics -fopenmp -O2
-    
-    ./mbhzoom
+
