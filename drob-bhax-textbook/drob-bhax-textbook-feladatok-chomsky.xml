@@ -19,6 +19,53 @@
         <para>
             Tanulságok, tapasztalatok, magyarázat...
         </para>
+        <para>
+        Az unáris, azaz egyes számrendszer a legegyszerűbb számrendszer. Nevéből eredően egyes a legnagyobb jegye.
+            Amikor az kezünkön elszámolunk ötig akkor unáris számrendszerben dolgozunk. Ez le is fedi a lényeget, egy k szám
+            átírása unáris számrendszerbe k darab egyes lesz. Például: 5 az annyi, mint 11111.
+        </para>
+        
+        <para>
+        Egy c++ demonstráció:    
+        </para>
+        
+        <programlisting language="c++">
+            <![CDATA[
+            #include <iostream>
+
+void tounar(int a){
+    for(int i=0; i<a; i++)
+        std::cout << "1";
+    
+    std::cout << std::endl;
+}
+
+int main(){
+    
+    int val;
+    std::cout << "Type a number in decimal." << std::endl;
+    while(std::cin >> val){
+        tounar(val);
+    }
+    
+    return 0;
+}
+
+]]>
+        </programlisting>
+        
+        <para>
+            A gépünk feladata pontosan ez lenne. Amikor az szalagról az író/olvasó fej beolvas egy decimális számot,
+            akkor egy eljárás által átváltsa unárisba azt.
+        </para>
+        
+        <para>
+        A gépünk első feladata az lenne, hogy a szalagon érkező számot megvizsgálja. El lépked az utolsó számjegy utániig, majd visszalép az utolsóra és
+        elkezd kivonni egyeket. Először az utolsó tagból, majd az utolsó előttiből és így tovább. A folyamat zajlani fog, amíg nulla nem lesz az olvasott szám. A kivont egyeseket elhelyezi a tárban, 
+        az unáris számrendszerbe átváltott számunkat onnan fogjuk tudni kinyerni.
+        
+        </para>
+
     </section>        
         
     <section>
@@ -26,15 +73,114 @@
         <para>
             Mutass be legalább két környezetfüggő generatív grammatikát, amely ezt a nyelvet generálja!
         </para>
+         <para>
+            A generatív nyelvtan megalkotása Noam Chomsky nyelvész, illetve matematikus nevéhez fűződik.
+            A lentebb látható generatív grammatikák lényege abban rejlik, hogy miképp tudjuk kezdőszimbólumunkból a megadott szabályok segítségével csupán nem terminális jelekből, azaz konstansokból felépíteni a mondtatot.
+        </para>           
         <para>
-            Megoldás videó:
+            Az első:
+         <programlisting language="tex"><![CDATA[
+         S, X, Y változók 
+a, b, c konstansok
+S - abc, S - aXbc, Xb - bX, Xc - Ybcc, bY - Yb, aY - aaX, aY - aa
+
+	S (S - aXbc)
+	aXbc (Xb - bX)
+	abXc (Xc - Ybcc)
+	abYbcc (bY - Yb)
+	aYbbcc (aY - aaX)
+	aaXbbcc (Xb - bX)
+	aabXbcc (Xb - bX)
+	aabbXcc (Xc - Ybcc)
+	aabbYbccc (bY - Yb)
+	aabYbbccc (bY - Yb)
+	aaYbbbccc (aY - aa)
+	aaabbbccc 
+        ]]></programlisting> 
+            
         </para>
         <para>
-            Megoldás forrása:                
+            A második:
+        <programlisting language="tex"><![CDATA[ 
+        A, B, C változók
+a, b, c konstansok
+A - aAB, A - aC, CB - bCc, cB - Bc, C - bc
+
+	A (A - aAB)
+	aAB ( A - aAB)
+	aaABB ( A - aAB)
+	aaaABBB ( A - aC)
+	aaaaCBBB (CB - bCc)
+	aaaabCcBB (cB - Bc)
+	aaaabCBcB (cB - Bc)
+	aaaabCBBc (CB - bCc)
+	aaaabbCcBc (cB - Bc)
+	aaaabbCBcc (CB - bCc)
+	aaaabbbCccc (C - bc)
+	aaaabbbbcccc    
+               
+        ]]></programlisting>     
+        </para>
+        <para>
+         Miért is nem környezetfüggő? Azért, mert nem fordul olyan elő, hogy a szabályok alakjánál a bal oldalon csak nem terminális jel lenne.
+        </para>
+    </section>        
+                
+    <section>
+        <title>Hivatkozási nyelv</title>
+        <para>
+            A <citation>KERNIGHANRITCHIE</citation> könyv C referencia-kézikönyv/Utasítások melléklete alapján definiáld 
+            BNF-ben a C utasítás fogalmát!
+            Majd mutass be olyan kódcsipeteket, amelyek adott szabvánnyal nem fordulnak (például C89), mással (például C99) igen.
+        </para>
+        <para>
+            Megoldás videó: 
+        </para>
+        <para>
+            Megoldás forrása:  
         </para>
         <para>
             Tanulságok, tapasztalatok, magyarázat...
         </para>
+        
+        <para>
+            Először is bemutatnám a kódcsipetet, amely a c89-es szabvánnyal nem fordul le, viszont a c99-esnél nem okoz problémát:
+        </para>
+        <programlisting language="c"><![CDATA[
+            #include <stdio.h>
+
+int main(){
+   
+    int tomb[3]={1,2,3};
+
+    for(int i=0;i<3;i++)
+       printf("%d\n", tomb[i]);
+}
+//ez itt hiba lesz 
+        ]]></programlisting>
+        
+        <para>
+            Fordítás után látható is a hibaüzenet:
+        </para>
+       
+        <screen>
+            <![CDATA[
+mate@ubuntu:~/Asztal$ gcc c89.c -o c89 -std=c89
+c89.c: In function ‘main’:
+c89.c:7:5: error: ‘for’ loop initial declarations are only allowed in C99 or C11 mode
+     for(int i=0;i<3;i++)
+     ^~~
+c89.c:7:5: note: use option -std=c99, -std=gnu99, -std=c11 or -std=gnu11 to compile your code
+c89.c: At top level:
+c89.c:10:1: error: C++ style comments are not allowed in ISO C90
+ //ez itt hiba lesz
+ ^
+c89.c:10:1: error: (this will be reported only once per input file)
+
+        
+        ]]>
+        </screen>
+
     </section>        
                 
     <section>
@@ -566,4 +712,4 @@ $(\exists y \forall x (y<x) \supset \neg (x \text{ prím}))$
     </section>                     
 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
-</chapter>                         
+</chapter>                
