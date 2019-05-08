@@ -1,0 +1,594 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Conway!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+    </info>
+    <section>
+        <title>Hangyaszimulációk</title>
+        <para>
+            Írj Qt C++-ban egy hangyaszimulációs programot, a forrásaidról utólag reverse engineering jelleggel
+            készíts UML osztálydiagramot is!
+        </para>
+        <para>
+            Megoldás videó: <link xlink:href="https://bhaxor.blog.hu/2018/10/10/myrmecologist">https://bhaxor.blog.hu/2018/10/10/myrmecologist</link>
+        </para>
+        <figure>
+            <title>Hangyaszimuláció UML</title>
+            <mediaobject>
+                <imageobject>
+                <imagedata fileref="/home/dekanyrobert/Dokumentumok/ant.png" format="PNG"/>
+                </imageobject>
+            </mediaobject>
+            </figure>
+        <para>
+            Az UML ábrában minden blokk egy egy osztályt jelent. Blokkon belül 3 tagrészt különítünk el. Fentről lefele haladva: osztálynév, tulajdonságok, viselkedés. A + vagy minusz jelek a láthatóságot jelentik. + ha más osztályok láthatják illetve - ha nem (private).
+        </para> 
+        <para><function>Ant</function></para>  
+        <para>Az <function>Ant</function> osztály fogja létrehozni a hangya objektumokat. Vannak különböző mezői, ami a hangyára jellemző illetve egy Ant() függvénye.</para>
+        <para><function>AntThread</function></para>
+        <para>Ez az osztály írja le a hangya egyed tulajdonságait. A tulajdonságok meghatározzák pl. az egyes egyedek elhelyezkedését, viselkedését, mozgását stb. Valamit ezekhez a tulajdonságokhoz párosulnak függvények. Ilyen pl. a run(), newDir(), detDirs() függvények, amik a hangya mozgását írják le. </para>
+        <para><function>AntWin</function></para>
+        <para>Ebben az osztályban történik meg a rácsvonalak valamint a hangyák és feromon útvonalak kirajzoltatása. Tartalmaz továbbá egy AntThread pointert is, ami az egyes hangya egyedet tulajdonságait és viselkedéseit írják le.</para>
+    </section>        
+    <section>
+        <title>Java életjáték</title>
+        <para>
+            Írd meg Java-ban a John Horton Conway-féle életjátékot, 
+            valósítsa meg a sikló-kilövőt!
+        </para>
+        <programlisting language="java"><![CDATA[
+        import javax.swing.JFrame;
+        import javax.swing.JPanel;
+        import java.awt.Color;
+        import java.awt.Font;
+        import java.awt.FontMetrics;
+        import java.awt.Graphics;
+        import java.awt.Image;
+        import java.awt.Rectangle;
+        import java.awt.Shape;
+        import java.awt.event.KeyEvent;
+        import java.awt.event.KeyListener;
+        import java.awt.event.MouseEvent;
+        import java.awt.event.MouseListener;
+        import java.awt.image.ImageObserver;
+        import java.text.AttributedCharacterIterator;
+        import java.util.ArrayList;
+        import java.awt.Event;
+        public class game_of_life extends JFrame {
+            RenderArea ra;
+            private int i;
+            
+            public game_of_life() {
+                super("Game of Life");
+                this.setSize(1005, 1030);
+                this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+                this.setVisible(true);
+                this.setResizable(false);
+                ra = new RenderArea();
+                ra.setFocusable(true);
+                ra.grabFocus();
+                add(ra);
+                ra.edit_mode = true;
+                ra.running = true;
+            }
+            public void update() {
+                ArrayList<ArrayList<Boolean>> entities = new ArrayList<ArrayList<Boolean>>();// = ra.entities;
+                int size1 = ra.entities.size();
+                int size2 = ra.entities.get(0).size();
+                for(int i=0;i<size1;i++)
+                {
+                    entities.add( new ArrayList<Boolean>());
+                    for(int j=0;j<size2;j++)
+                    {
+                        int alive = 0;
+                        
+                        if(ra.entities.get((size1+i-1)%size1).get((size2+j-1)%size2)) alive++;
+                        if(ra.entities.get((size1+i-1)%size1).get((size2+j)%size2)) alive++;
+                        if(ra.entities.get((size1+i-1)%size1).get((size2+j+1)%size2)) alive++;
+                        if(ra.entities.get((size1+i)%size1).get((size2+j-1)%size2)) alive++;
+                        if(ra.entities.get((size1+i)%size1).get((size2+j+1)%size2)) alive++;
+                        if(ra.entities.get((size1+i+1)%size1).get((size2+j-1)%size2)) alive++;
+                        if(ra.entities.get((size1+i+1)%size1).get((size2+j)%size2)) alive++;
+                        if(ra.entities.get((size1+i+1)%size1).get((size2+j+1)%size2)) alive++;
+                        
+                        /*for(int k=-1;i<2;k++)
+                        {
+                            for(int l = -1; l < 2 ;l++)
+                            {
+                                if(!(k==0 && l == 0))
+                                {
+                                    if(ra.entities.get((size1+i+k)%size1).get((size2+j+l)%size2)) alive++;
+                                }
+                            }
+                        }*/
+                        if(ra.entities.get(i).get(j))
+                        {
+                            if(alive < 2 || alive > 3)
+                            {
+                                //ra.entities.get(i).set(j,false);
+                                entities.get(i).add(false);
+                            }
+                            else
+                            {
+                                entities.get(i).add(true);
+                            }
+                        }
+                        else
+                        {
+                            if(alive == 3)
+                            {
+                                //ra.entities.get(i).set(j,true);
+                                entities.get(i).add(true);
+                            }
+                            else
+                            {
+                                entities.get(i).add(false);
+                            }
+                        }
+                    }
+                }
+                ra.entities = entities;
+            }
+            class RenderArea extends JPanel implements KeyListener {
+                public ArrayList<ArrayList<Boolean>> entities;
+                public int diff;
+                public boolean edit_mode;
+                public boolean running;
+                public RenderArea() {
+                    super();
+                    setSize(1000, 1000);
+                    setVisible(true);
+                    setBackground(Color.WHITE);
+                    setForeground(Color.BLACK);
+                    setLocation(0, 0);
+                    diff = 20;
+                    
+                    this.addMouseListener((MouseListener) new MouseListener(){
+                    
+                        @Override
+                        public void mouseReleased(MouseEvent arg0) {
+                            
+                        }
+                    
+                        @Override
+                        public void mousePressed(MouseEvent arg0) {
+                            clicked(arg0);
+                        }
+                    
+                        @Override
+                        public void mouseExited(MouseEvent arg0) {
+                            
+                        }
+                    
+                        @Override
+                        public void mouseEntered(MouseEvent arg0) {
+                            
+                        }
+                    
+                        @Override
+                        public void mouseClicked(MouseEvent arg0) {
+                            
+                        }
+                    }); 
+                    this.addKeyListener(this);
+                    entities = new ArrayList<ArrayList<Boolean>>();
+                    for(int i=0;i<1000/diff;i++)
+                    {
+                        entities.add(new ArrayList<Boolean>());
+                        for(int j=0;j<1000/diff;j++)
+                        {
+                            entities.get(i).add(false);
+                        }
+                    }
+                    
+                }
+                void clicked(MouseEvent arg0)
+                {
+                    System.out.println("Button "+(arg0.getButton()== 1 ? "Left" : "Right"));
+                    System.out.println("X:"+arg0.getX()/diff);
+                    System.out.println("Y:"+arg0.getY()/diff);
+                    if(edit_mode)
+                    {
+                        entities.get(arg0.getX()/diff).set(arg0.getY()/diff,!entities.get(arg0.getX()/diff).get((arg0.getY()/diff)));
+                        this.update(this.getGraphics());
+                    }
+                    
+                }
+                @Override
+                public void keyTyped(KeyEvent e) {
+                    //System.out.println(e.getKeyChar());
+                }
+            
+                @Override
+                public void keyReleased(KeyEvent e) {
+                    System.out.println("Key pressed:"+e.getKeyChar());
+                    if(e.getKeyChar()=='e')
+                    {
+                        edit_mode = !edit_mode;
+                    }
+                    else if(e.getKeyChar()=='q')
+                    {
+                        this.running = false;
+                    }
+                    else if(e.getKeyChar()=='c')
+                    {
+                        if(edit_mode)
+                        {
+                            for(int i=0;i<this.entities.size();i++)
+                            {
+                                for(int j=0;j<this.entities.get(1).size();j++)
+                                {
+                                    this.entities.get(i).set(j,false);
+                                }
+                            }
+                            this.update(this.getGraphics());
+                        }
+                        
+                    }
+                }
+            
+                @Override
+                public void keyPressed(KeyEvent e) {
+                    //System.out.println(e.getKeyChar());
+                }
+                @Override
+                protected void paintComponent(Graphics g) {
+                    super.paintComponent(g);
+                    g.clearRect(0, 0, 1000, 1000);
+                    for(int i=0;i<1000;i+=diff)
+                    {
+                        g.drawLine(i, 0, i, 1000);
+                    }
+                    for(int j=0;j<1000;j+=diff)
+                    {
+                        g.drawLine(0, j, 1000, j);
+                    }
+                    for(int i=0;i<1000;i+=diff)
+                    {
+                        for(int j=0;j<1000;j+=diff)
+                        {
+                            if(entities.get(i/diff).get(j/diff))
+                            {
+                                g.setColor(Color.BLACK);
+                            
+                            }
+                            else
+                            {
+                                g.setColor(Color.WHITE);
+                            }
+                            
+                            g.fillRect(i+2, j+2, diff-3, diff-3);
+                        }
+                    }
+                }
+                
+                private static final long serialVersionUID = 1L;
+                
+            }
+            private static final long serialVersionUID = 1L;
+            public static void main(String args[])
+            {
+                game_of_life gol = new game_of_life();
+                while(gol.ra.running)
+                {
+                    if(!gol.ra.edit_mode)gol.update();
+                    try{Thread.sleep(200);}
+                    catch(Exception ex)
+                    {
+                    }
+                    gol.ra.update(gol.ra.getGraphics());
+                }
+                gol.dispose();
+            }
+}]]></programlisting>
+        <para>
+             Lényegében majdnem ugyanaz van megírva, mint a C++ verzióban. Annyi, hogy a Java-s verzióban a beépített gui library-ket (swing, awt) használom.
+             A program lényege az ez alatt lévő C++ életjátékba van kifejtve. Továbbiakban hozzá szeretnék írni 
+        </para>
+    </section>
+    <section>
+        <title>Qt C++ életjáték</title>
+        <para>
+            Most Qt C++-ban!
+        </para>
+        <para>
+            Az életjátékot John Conway Cambridge Egyetem matematikusa találta ki.
+            Ez egy nullszemélyes játék. Lényege, hogy a játékos megad kezdő alakzatot vagy alakzatokat és ha elinditjuk egy számítás eredményeként bizonyos feltételek mellett új alakzatot kapunk.
+            Sejtautomaták közé tartozik ez a fajta játék.
+            Szabályok:
+        </para>
+        <para>1. Túléli a sejt(kocka), ha a közvetlen közelébe 2 vagy 3 szomszédja van.</para>
+        <para>2. A sejt elpusztul, ha 2-nél kevesebb vagy 3-nél több szomszédja van. Az előbbit túlnépesedésnek a utobbit elszigetelődésnek nevezzük.</para>
+        <para>3. Új sejt születik minden olyan cellában, amelynek környezetében párom sejt található.</para>
+        <para>
+            Jellegzetes alakzat a Bill Gosper féle "siklóágyú", amely időközönként siklókat lő ki.               
+        </para>
+        <para>
+            Tanulságok, tapasztalatok, magyarázat...
+        </para>
+        <programlisting language="c"><![CDATA[
+#include <SFML/System.hpp>
+#include <SFML/Graphics.hpp>
+#include <vector>
+#include <iostream>
+using namespace sf;
+using std::vector;
+using std::cout;
+using std::endl;
+class Grid
+{
+public:
+    Grid(unsigned int x = 1000, unsigned int y = 1000, unsigned int diffs = 50) : w(x),h(y),diff(diffs)
+    {
+        
+    }
+    void draw(RenderWindow & window)
+    {
+        for(int i=0;i<w;i+=diff)
+        {   
+            Vertex line[] =
+            {
+                sf::Vertex(sf::Vector2f(i,0)),
+                sf::Vertex(sf::Vector2f(i, h))
+            };
+            line[0].color = Color(0,0,0);
+            line[1].color = Color(0,0,0);
+            window.draw(line, 2, sf::Lines);
+        }
+        for(int i=0;i<h;i+=diff)
+        {   
+            Vertex line[] =
+            {
+                sf::Vertex(sf::Vector2f(0,i)),
+                sf::Vertex(sf::Vector2f(w,i))
+            };
+            line[0].color = Color(0,0,0);
+            line[1].color = Color(0,0,0);
+            window.draw(line, 2, sf::Lines);
+        }
+    }
+    unsigned int w;
+    unsigned int h;
+    unsigned int diff;
+};
+class Square
+{
+public:
+    Square()
+    {
+    }
+    Square(int x_pos, int y_pos, float w, bool alive = false)
+    {
+        square = new RectangleShape(Vector2f(w,w));
+        square->setPosition(Vector2f(x_pos,y_pos));
+        aliveState = alive;
+    }
+    /*Square (const Square& other )
+    {
+        if(this != &other)
+        {
+            delete this->square;
+            this->square = other.square;
+        }
+    }
+    Square& operator=(const Square& other)
+    {
+        if(this != &other)
+        {
+            delete this->square;
+            this->square = other.square;
+        }
+        return *this;
+    }*/
+    ~Square()
+    {
+        delete square;
+    }
+    void update()
+    {
+        if(aliveState)
+        {
+            square->setFillColor(Color::Black);
+        }
+        else
+        {
+            square->setFillColor(Color::White);
+        }
+        
+    }
+    void setFill(Color c = Color::White)
+    {
+        square->setFillColor(c);
+    }
+    void draw(RenderWindow &window)
+    {
+        window.draw(*square);
+    }
+    RectangleShape* square;
+    bool aliveState;
+private:
+    
+};
+vector<vector<Square*>> update(vector<vector<Square*>> v)
+{
+    vector<vector<Square*>> tmp ;//= v;
+    for(int i=0;i<v.size();i++)
+    {
+        tmp.push_back(vector<Square*>());
+        for(int j=0;j<v[0].size();j++)
+        {
+            tmp[i].push_back(new Square(v[i][j]->square->getPosition().x,v[i][j]->square->getPosition().y,v[i][j]->square->getSize().x,v[i][j]->aliveState));
+        }
+    }
+    for(int i=0;i<v.size();i++)
+    {
+        for(int j=0;j<v[0].size();j++)
+        {
+            int live_neighbours = 0;
+            live_neighbours +=  v[(i-1)%v.size()][(j-1)%v[0].size()]->aliveState;
+            live_neighbours +=  v[(i-1)%v.size()][(j)%v[0].size()]->aliveState;
+            live_neighbours +=  v[(i-1)%v.size()][(j+1)%v[0].size()]->aliveState;
+            live_neighbours +=  v[(i)%v.size()][(j-1)%v[0].size()]->aliveState;
+            live_neighbours +=  v[(i)%v.size()][(j+1)%v[0].size()]->aliveState;
+            live_neighbours +=  v[(i+1)%v.size()][(j-1)%v[0].size()]->aliveState;
+            live_neighbours +=  v[(i+1)%v.size()][(j)%v[0].size()]->aliveState;
+            live_neighbours +=  v[(i+1)%v.size()][(j+1)%v[0].size()]->aliveState;
+            //cout <<" X:"<<i << " y:"<< j << " Live neighbours:"<< live_neighbours<<endl;
+            if(v[i][j]->aliveState)
+            {
+                if(live_neighbours < 2)
+                {
+                    tmp[i][j]->aliveState = false;
+                }
+                else if(live_neighbours > 3)
+                {
+                    tmp[i][j]->aliveState = false;
+                }
+            }
+            else
+            {
+                if(live_neighbours == 3)
+                {
+                    tmp[i][j]->aliveState = true;
+                }
+            }
+        }
+    }
+    return tmp;
+}
+void killall(vector<vector<Square*>> &v)
+{
+    for(int i=0;i<v.size();i++)
+    {
+        for(int j=0;j<v[0].size();j++)
+        {
+            v[i][j]->aliveState=false;
+        }
+    }
+}
+int main()
+{
+    RenderWindow window(VideoMode(1000,1000),"Game of Life");
+    window.setFramerateLimit(10);
+    window.setActive();
+    
+    Vector2u size = window.getSize();
+    Grid g(size.x,size.y,1000/40);
+    
+    
+    int h = g.h/g.diff+1;
+    int w = g.w/g.diff+1;
+    //Square squares[h][w];
+    std::vector<std::vector<Square*>> squares;
+    bool edit_mode = true;
+    for(int i=0;i<h;i++)
+    {
+        squares.push_back(vector<Square*>());
+        for(int j=0;j<w;j++)
+        {
+            squares[i].push_back(new Square(i*g.diff+1,j*g.diff+2,g.diff-3));
+        }
+    }
+    //squares[4][5]->aliveState=true;
+    while (window.isOpen())
+    {
+        window.clear(sf::Color::White);
+        // check all the window's events that were triggered since the last iteration of the loop
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            // "close requested" event: we close the window
+            if (event.type == sf::Event::Closed)
+            {
+                window.close();
+            }
+            else if(event.type == Event::MouseButtonPressed)
+            {
+                if(edit_mode && event.mouseButton.button == Mouse::Button::Left)
+                {
+                    /*cout<<event.mouseButton.x<<" "<<event.mouseButton.y<<endl;
+                    cout<<event.mouseButton.x/g.diff<< " "<< event.mouseButton.y/g.diff<<endl;*/
+                    squares[event.mouseButton.x/g.diff][event.mouseButton.y/g.diff]->aliveState= !squares[event.mouseButton.x/g.diff][event.mouseButton.y/g.diff]->aliveState;
+                    cout<< "Changed state on entity at X:"<< event.mouseButton.x/g.diff << " Y:"<<event.mouseButton.y/g.diff << " to "<< (squares[event.mouseButton.x/g.diff][event.mouseButton.y/g.diff]->aliveState? "Alive" : "Dead")<<endl;
+                }
+            }
+            else if(event.type == Event::KeyPressed)
+            {
+                if(event.key.code == Keyboard::Q)
+                {
+                    cout<<"Close request recieved. Application will exit."<<endl;
+                    window.close();
+                }
+                if(edit_mode && event.key.code == Keyboard::C)
+                {
+                    cout<< "Killed all entities." <<endl;
+                    killall(squares);
+                }
+                if(event.key.code == Keyboard::E)
+                {
+                    edit_mode = !edit_mode;
+                    if(edit_mode)
+                    {
+                        cout<< "Changed to edit mode."<<endl;
+                    }
+                    else
+                    {
+                        cout<< "Changed to simulation mode."<<endl;
+                    }
+                    
+                }
+            }
+            
+                
+        }
+        /*s.draw(window);
+        s.square->setPosition(Vector2f(s.square->getPosition().x+1,s.square->getPosition().y));*/
+        g.draw(window);
+        for(int i=0;i<h;i++)
+        {
+            for( int j=0; j<w;j++)
+            {
+                squares[i][j]->draw(window);
+            }
+        }
+        window.display();
+        if(!edit_mode) squares = update(squares);
+        for(int i=0;i<h;i++)
+        {
+            for( int j=0; j<w;j++)
+            {
+                squares[i][j]->update();
+            }
+        }
+    }
+     
+    return EXIT_SUCCESS;
+}]]></programlisting>
+    <para>
+    Fordítás: "g++ *.cpp -o sfml-app -lsfml-graphics lsfml-window -lsfml.system". Amikor már a programunk fut , az esetben kézzel kell rajzolnunk egy alakzatot , majd nyomni egy "e" betűt , aminek következtében a program elkezdi az "életjátékot".
+    </para>
+    <para>
+        A program SFML ablakozó rendszerre épül. Elősször létrehozzuk az ablakunkat, majd megrajzoltatjuk a rács-pont rendszert.
+        A <function>update()</function> függvénybe van megírva az egyes szabályok mentén történő matematikai műveletek végrehajtása. Ez ha a szabály teljesül visszatér egy Alive értékkel, ami jellemzi a rácspontot.
+        A többi az SFML-hez tartozó kódokat mutatja. Úgy, mint az egéresemények, kirajzoltatás update stb.
+    </para>
+    <para>Idő híján a csak a lényegi részt írtam ki. Később bővebben is kifejtem a program működését, mint Java, mint C++ verziókban.</para>            
+    </section>        
+    <section>
+        <title>BrainB Benchmark</title>
+        <para>
+            Ez a program vagy játék egy készségmérő program, ami azt méri, hogy egy bizonyos objektumot mennyire tudunk lekövetni.
+            Kezdetben egy négyzetben lévő karikára kell ráfocuszálni. Cél, hogy az egérgomb folyamatos nyomvatartása mellett kövessük a Samu Entropy nevű objektumot a kurzorral.
+            Bizonyos időközönként új négyzetek (objektumok) jelennek meg a képernyőn, ami nagyban nehezíti a Samu objektum követését. Illetve az egyes objektumok mozgása, rezgése is megnőhet.
+        </para>
+        <para>
+            A játék során erős koncentrációs és reagálási képesség kell.
+        </para>
+        <para>Ehhez hasonló képességfelmérés létezik a League of Legends játékon belül is, amit elsőként Veres Dávid Msc hallgató munkájában láttam.
+        A játékon belül különböző behatások érnek minket játék közben. (pl. teamfight, roam, active items stb.) Ezekre mind együttesen kell odafigyelni, ha hasznos tagjai akarunk lenni a csapatunknak. Ez nyilván nem könnyű így sok gyakorlást és odafigyelést igényel az egyes objektumok követése, figyelése. </para>
+                    
+    </section>        
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+</chapter>                

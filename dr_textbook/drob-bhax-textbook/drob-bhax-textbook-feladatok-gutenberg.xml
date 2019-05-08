@@ -1,0 +1,151 @@
+<chapter xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
+    <info>
+        <title>Helló, Gutenberg!</title>
+        <keywordset>
+            <keyword/>
+        </keywordset>
+        <cover>
+            <para>
+                Programozás tankönyvek rövid olvasónaplói.
+            </para>
+        </cover>
+    </info>
+    <section>
+        <title>PICI Juhász István</title>
+        <para>
+            II. heti előadás - 1.2 Alapfogalmak
+        </para>
+        <para>
+            A programozásban használatos nyelvek közül több szintet különböztetünk meg. 
+            gépi nyelv
+            assembly szintű nyelv
+            magas szintű nyelv
+            Az előbbi 2 szintről csak említés szintén tanultunk, hiszen a mai időkben a legelterjedtebbek a magas szintű nyelvek. Minden magas szintű nyelvet a szintaktika és a szemantika határoz meg. A szintaktika a nyelv által lefektetett és jól meghatározott szabályok gyűjteménye. Ezek formai, nyelv specifikus követelmények. Pl.: Szintaktikai hiba lehet egy ; záró tag elhagyása. A szemantikai szabályok pedig a tartalmi, jelentésbeli formális meghatározások. Pl.: Szemantikai hiba esetén a programunk futhat viszont nem várt működést eredményezhet.
+            Minden program az őt futtató processzor utasításkészlete alapján fordul. (gépi kód) Alapesetben a programunk kódja nem gépi kódon íródott így át kell alakítani a forráskódokat a gép számára értelmezhető nyelvezetűre. Erre két megoldás adott a magas szintű nyelvek esetében.
+            fordítóprogramos nyelv
+            interpreteres nyelv
+            A fordítóprogram a forráskódból gép kódú úgynevezett tárgy kódot állít elő. Ez m
+            ég nem futtatható így egy kapcsolatszerkesztő előállítja a tárgykód ból a megfelelő futtatható kód állományt.
+            Interpreteres nyelv esetében pedig a forráskódot sorról sorra értelmezi és hajtja végre. Tipikus interpreteres nyelv a Java, ahol a forráskódból köztes .class kód majd gépi kód állítódik elő.
+
+            Minden programozási nyelvhez létezik olyan IDE (Integrated Developer Environment), ami nagyban segíti az adott nyelvben történő hatékony programozást. IDE funkciók a kódszínezés, kódkiegészítés, debuggolás, tesztelés stb.
+
+            Eddigi tanulmányaim során többnyire objektumorientált nyelvekben programoztam, ami az imperatív nyelvi programozás csoportjába tartozik. Valamint ide tartozik még az eljárásorientált nyelvek is. Viszont sose hallottam még deklaratív nyelvekről. Ezek többnyire a programozó által meghatározott problémára keresik a megoldást a nyelvi implementációk segítségével. Ezek nem algoritmikus nyelvek.
+        </para>
+        <para>
+            III. heti előadás (28. oldal, a "2.4. Adattípusok" című rész):
+        </para>
+        <para>
+            Az adatabsztrakció első formája az adattípus. Az adattípus rendelkezik névvel, amely azonosítja a típust, például int, double. Léteznek típusos és nem típusos programozási nyelvek. A típususosok engedik, hogy a programozó adja meg a változók típusát. Ilyenek például a C++ és a Java. A nem típusosok automatikusan állapítják meg a változó típusát. Ilyenek például a R és a Python. Adattípusoknak két csoportja van, az egyszerű és az összetett. Az egyszerű adattípusok azok, amelyeket nem lehet tovább bontani, például int. Az összetett típusok például a struktúrák vagy a felhasználó által definiált típusok.
+        </para>
+        <para>
+            III. heti előadás (34. oldal, a "2.5. A nevesített konstans" című rész):
+        </para>
+        <para>
+            A nevesített konstansok azt a célt szolgálják a programokban, hogy a konstansoknak olyan nevet adjunk, amely jelképezi annak típusát és értékét. Illetve másik célja, hogy sokszori használat esetén csak a definiálásnál kelljen váloztatni az értékét, ha szükséges. Ezeket a konstansokat mindig definiálni kell.
+        </para>
+        <para>
+            III. heti előadás (35. oldal a "2.6. A változó" című rész):
+        </para>
+        <para>
+            A változónak négy komponense van: a név, az attribútomok, a cím és az érték. A név az egy azonosító, a másik három komponenst egy névhez rendeljük hozzá. A legfőbb atribútom, a típus, amely a változó által felvett értéket határolja be. A változóhoz az attribútumok deklarációk segítségével rendelődnek. A deklarációnak különböző fajtáit simerjük: Explicit deklaráció, Implicit deklaráció, Automatikus deklaráció. A változó címe meghatározza a változó értékének a helyét. A címrendelésnek három fajtáját ismerjük: a Statikus tárkiosztás, a Dinamikus tárkiosztás, és a programozó által vezérelt kiosztás. A változó értékének a meghatározására több opció is van: értékadó utasítás, kezdőérték adás.
+        </para>
+        <para>
+            III. heti előadás (39. oldal, az "2.7. Alapelemek az egyes nyelvekben" című rész):
+        </para>
+        <para>
+            C-ben az aritmetikai típusok az egyszerű típusok, a származtatottak az összetett típusok. A karakter típus elemeit belső kódok alkotják. Logikai típus nincs, a hamis az int 0 az igaz pedig az int 1. A struktúra egy fix szerkeztű rekord. A void tartománya üres. A felsorolásos típusok nem fedhetik egymást. Különböző elemekhez ugyanazt az értéket hozzárendelhetjük.
+        </para>
+        <para>
+            IV. heti előadás - 3. Kifejezések
+        </para>
+        <para>
+            Kifejezések olyan “szintaktikai” eszközök, amelyekkel új értékeket adhatunk különböző a programon belül található kód részletekből. Két részből épül fel, az érték és típusból.
+Formális összetevők az operandusok, operátorok és a kerek zárójelek. Az operandusok reprezentálják az értékeket. Ezek lehetnek különböző változók, konstansok, függvényhívások stb. Az operátorok a műveleti jelek, amik meghatározzák az egyes értékekkel való műveletet. Pl. egyenlőségjel (=), mutatók (->), pontok (.) vagy akár az összeadásjel is. 
+
+Operandusok számát tekintve 3 típust különböztetünk meg. Az egyoperandusút (pl. ++a). a kétoperandusút (pl. a + a), és a háromoperandusút, ami jellegzetesen lehet egy “kicsi if”. (pl. a ? xyz : asd)
+
+Két operandusú kifejezéseknél három sorrend van. Prefix, itt a operátor az operandusok előtt áll. Postfix, ahol az operátor az operandusok után áll. Illetve az infix, ahol az operátor az operandusok között helyezkedik el.
+
+Kiértékelésnek nevezzük azt a folyamatot, amikor a kifejezésünk értéke kiértékelődik. A műveletek végrehajtása balról jobbra az egyes műveletek által meghatározott erősség (precedencia) szerint történik.
+        </para>
+        <para>
+            V. heti előadás (56. oldal, az "4. Utasítások" című rész):
+        </para>
+        <para>
+            Az utasítások megalkotják a programok egységeit: az algoritmusok egyes lépései, a fordítóprogram ezzel generálja a tárgyporgramot. Két csoportjuk van: a deklarációs utasítások, és a végrehajtó utasítások. A deklarációs utasítások mögött nem áll tárgykód, a fordítóprogramnak szólnak. A végrehajtó utasításokból pedig a fordító generálja a kódot. A végrehajtó utasításokat csoportosíthatjuk: értékadó utasítás, üres
+            utasítás, ugró utasítás, elágaztató utasítás, ciklusszervező utasítás, hívó utasítás, vezérlésátadó utasítás, I/O utasítás, egyéb utassítás. A vezérlési szerkezetet megvalósító utasítások: ugró utasítás, elágaztató utasítás, ciklusszervező utasítás, hívó utasítás, vezérlésátadó utasítás.
+        </para>
+        <para>
+            VII. heti előadás (78-84. oldal):
+        </para>
+        <para>
+            A paraméterátadásnak többféle módja is lehet, ezek nyelvfüggőek, hogy melyik nyelv melyiket alkalmazza. 
+        </para>
+        <para>
+            Történhet érték szerint, mint a C-ben például. Ekkor a formális paraméter értékül kapja az aktuális paraméter értékét. Ennél a módszernél a függvényben nem lehet megváltoztatni a aktuális paraméter értékét. Lehet címszerinti a paraméterátadás. Ekkor a formális paraméter címe értékül kapja az aktuális paraméter címét. Ilyenkor a függvényben meg lehet változtatni az aktuális paraméter értékét. Lehet eredmény szerinti átadás is, ekkor a formális paraméter szintén megkapja az aktuális paraméter címét, de nem használja, csak a végén beletölti az adatokat. Létezik még érték-eredmény szerinti, ekkor másolódik a cím szintén, és használja is az adatokat, majd a függvény végén belemásolja a formális paraméterbe az adatokat.
+        </para>
+    </section>        
+    <section>
+        <title>Programozás bevezetés</title>
+        <para>                
+            <citation>KERNIGHANRITCHIE</citation>
+        </para>
+        <para>
+            Megoldás videó: <link xlink:href="https://youtu.be/zmfT9miB-jY">https://youtu.be/zmfT9miB-jY</link>
+        </para>
+        <para>
+            V.heti előadás - Vezérlési szerkezetek
+        </para>
+        <para>
+            Egy nyelv vezérlésátadó utasításai az egyes műveletek végrehajtási sorrendjét határozzák meg.
+            Ha egy kifejezés után pontosvesszőt (;) rakunk akkor az utasítás lesz. Ezeket egy idő után automatikusan alkalmazzuk viszont ha elhagyjuk nagy eséllyel hibát okoz. A ; jel elhagyása tipikus kezdő programozók hibája. :) Vannak utasítások, amelyekhez több utasítás párosulhat, ezeket blokkokba rendezzük a kapcsos zárójelek ( {} ) segítségével.
+
+            IF_ELSE utasítás egy elágazás, amely egy feltételt vizsgálva vagy az igaz ágba vagy a hamis ágba fordul. ( Szintaxis: if(feltétel) {feltétel teljesülése esetén} else {különben} ). Van több ágat vizsgáló IF_ELSE IF_ELSE szerkezet is. Ez többféle feltételt vizsgál és több ágba fordul.  ( Szintaxis: if(feltétel) {feltétel teljesülése esetén} else if(feltétel2) {feltétel2 teljesülése esetén} else {különben} ).
+            Létezik többágú elágazás ez a SWITCH. A switch egy feltételt vizsgálva több ágba is fordulhat a feltétel teljesülése esetén. Szintaxisa a switch(feltétel) majd ezt követi a törzs. Itt különböző case ágakba vannak definiálva a lehetséges feltételnek megfelelő értékek és az azokhoz tartozó utasítások. Minden case ágat egy (;break;) zár. Ha nem illeszkedik egyik megadott értékre sem, akkor a default ágba fordul.
+
+            Elágazások után tipikus vezérlési szerkezetek a ciklusok. Ezek közül hármat különböztetünk meg. A for ciklust, az elöl tesztelő ciklust(while) illetve a hátul tesztelő ciklust (do while).
+
+            FOR ciklus áll egy ciklusfejből. Itt három lezáró taggal szeparált tagok kell megadni. A ciklus kezdeti értékét a végpontot illetve a egy ciklus alatti lépés számát vagy “mértékét” (pl. i++). Ha a fej megvan ugyanúgy, mint az if-nél meg kell adnunk a ciklus törzsét kapcsos zárójelek között.
+
+            WHILE ciklus először egy feltételt vagy feltételeket vizsgál és ezek alapján, ha teljesül megismétli önmagát különben meg kilép a ciklusból. A feltétel után megadjuk a ciklus törzsét kapcsos zárójelekben.
+
+            DO WHILE ciklus a while-hoz hasonlóan egy feltételt vizsgálva ismételgeti önmagát, viszont itt a feltételvizsgálat a ciklusmag után helyezkedik el. Ez azt jelenti, hogy amit megadtunk a magban az egyszer mindenképpen lefordul, majd utána vizsgálja a feltételt.
+
+        </para>       
+        <para>
+            V. heti előadás (Függelékből az Utasítások című fejezet):
+        </para>
+        <para>
+            Az utasítások a leírásuk sorrendjében hajtódnak végre, általános a szintaktikai leírásuk, és számos csoportba sorolhatók: Címkézett utasítások, mint például a "case" és "default" címkéi a "switch" utasítással használhatók. A címke egy azonosító nélküli deklarált azonosítóból áll. Kifejezésutasítsok, az utasítások(kifejezésutasítás, értékadás, függvényhívás) többsége ilyen. Összetett utasítás, több utasítást egyetlen
+            utasításként kezeli, ez a fordításhoz szükséges, mivel sok fordítóprogram csak egyetlen utasítást fogad el. Kiválasztott utasítások, minden esetben a ehetséges végrehajtási sorrendek egyikét választják ki(if, if-else, switch). Iterációs utasítások, egy ciklust határoznak meg(while, do-while, for). Vezérlésátadó utasítások, vezérlés feltétel nélküli átadására alkalmasak(goto, continue, break, return).
+        </para>   
+    </section>        
+    <section>
+        <title>Programozás</title>
+        <para>                
+            <citation>BMECPP</citation>
+        </para>
+        <para>
+            V. heti előadás (1.-16.):
+        </para>
+        <para>
+            Míg C-ben egy függvény deklaráció üres paraméterlistája tetszőleges számú paramétert eredményezhet ugyanez C++-ba a paraméterként megadott void kulcsszó segítségével történik. További ilyen C++ tetszőleges paraméter lehet a (...) paraméter definiálás. 
+
+A program fő lefutási és indulási pontja a main metódus. Ezt kétféleképpen is definiálhatjuk. Üres paraméterrel (pl. int main()) vagy a paraméterben megadott parancssori argumentumokkal illetve azon számával. (pl. int main(int argc, char* argv[]) ).
+
+Hasonlóképpen, mint a többi magasszintű nyelvben változó deklarációt célszerű ott használi, ahol utasítás áll és használja azt. Ha nem így teszünk akkor warning-ot kaphatunk, ami arra figyelmeztet, hogy nem használt változót deklaráltunk.
+
+Vannak olyan előre megírt függvények, amelyeknek alapértelmezetten léteznek paraméteri argumentumai, ezeket meg kell adnunk, ha fel szeretnénk használni az adott függvényt.
+
+C-ben kizárólag csak érték szerinti paraméter átadás történhet ezzel szemben a C++-ban lehetőség van referencia szerinti paraméterátadásra is. Érték szerint 
+        </para> 
+        <para>
+            VI. heti előadás (17-58.):
+        </para>
+        <para>
+            Ez a fejezet a C++ osztályairól szól.     
+            Az objektum orientált programozás alapelve, hogy a probléma megoldását segítse azzal, hogy az emberi gondolkodáshoz közelebb hozza a programozást az osztályok és objektumok bevezetésével. Az egységbe zárás jelenti azt, hogy az összetartozó változók és függvények egy egységben legyen, ezek lesznek az adattagok és a tagfüggvények. Adatrejtés a private és protected adattagok és tagfüggvények bevezetésével jött létre. Az adatrejtés célja, hogy az osztály egyes tagjait ne lehessen kívülről elérni. A konstruktor szerepe, hogy lefusson, amikor létrejön az objektum, ezáltal akár inicializálva az adattagokat. A destruktor célja, hogy lefusson, amikor az objektum megsemmisül, ezáltal akár felszabadítva a diamikus adattagokat. A dinamikus adattagok osztályon belüli pointerek, amelyeket futásidőben hozzuk létre dinamikus memóriafoglalással, ezért ezeket, ha már nincs rájuk szükség, de legkésőbb a destruktorban fel kell szabadítani. A friend osztályok, illetve függvények olyan osztályok, illetve függvénynek, amelyek ugyan nem tagjai az osztálynak, viszont hozzáférnek azok private tagjaihoz. A tagváltozók inicializálása történhet a konstruktoron belül, illetve tagfüggvénnyel, vagy külső függvénnyel is. A statikus tagok azzal a tulajdonsággal rendelkeznek, hogy nem kell az osztályt példányosítani, hogy használni tudjuk. Az osztályok tartalmazhatnak beágyazott definíciókat, amelyek lehetnek enumerációk, struktúrák vagy akár osztályok is.
+        </para>
+    </section>        
+</chapter> 
