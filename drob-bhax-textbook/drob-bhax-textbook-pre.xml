@@ -1,19 +1,10 @@
 <preface xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xi="http://www.w3.org/2001/XInclude" version="5.0" xml:lang="hu">
     <title>Előszó</title>
     <para xml:id="bhax-textbook-pre.Eloszo">
-        Amikor programozónak terveztem állni, ellenezték a környezetemben, mondván, hogy kell  
-        szövegszerkesztő meg táblázatkezelő, de az már van... nem lesz programozói munka.
+        A legjobb dolog a programozásba az alkotás szabadsága, az új érték megteremtése.
+        Egy hétköznapi ember fel se tudja fogni, hogy mennyi lehetőség rejlik a programozói szakmában és ez teszi oly vonzóvá. - Dékány Róbert Zsolt
     </para>                 
-    <para>
-        Tévedtek. Hogy egy generáció múlva kell-e még tömegesen hús-vér programozó vagy
-        olcsóbb lesz allokálni igény szerint pár robot programozót a felhőből?
-        A programozók dolgozók lesznek vagy papok?
-        Ki tudhatná ma. 
-    </para>
-    <para>
-        Mindenesetre a programozás a teoretikus kultúra csúcsa. A GNU mozgalomban látom annak 
-        garanciáját, hogy ebben a szellemi kalandban a gyerekeim is részt vehessenek majd. Ezért programozunk.
-    </para>          
+              
     <section>
         <title>Hogyan forgasd</title>
         <para>
@@ -24,11 +15,7 @@
             magyarázatát, avagy írja meg a könyvet.
         </para>
         <para>
-            Miért univerzális? Mert az olvasótól (kvázi az írótól) függ, hogy kinek szól a könyv. 
-            Alapértelmezésben gyerekeknek, mert velük készítem az iniciális változatot. 
-            Ám tervezem felhasználását az egyetemi programozás oktatásban is. Ahogy szélesedni tudna a 
-            felhasználók köre, akkor lehetne kiadása különböző korosztályú gyerekeknek, családoknak, 
-            szakköröknek, programozás kurzusoknak, felnőtt és továbbképzési műhelyeknek és sorolhatnánk... 
+            Miért univerzális? Mert az olvasótól (kvázi az írótól) függ, hogy kinek szól a könyv.
         </para>
         <section>
             <title>Milyen nyelven nyomjuk?</title>

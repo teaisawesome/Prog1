@@ -10,61 +10,52 @@
         <para>
             Állapotátmenet gráfjával megadva írd meg ezt a gépet!
         </para>
+        <figure>
+            <title>A Turing-gép állapotátmeneti gráfjának egyik rajza.</title>
+            <mediaobject>
+                <imageobject>
+                <imagedata fileref="Turing-gep.png" format="PNG"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        
         <para>
-            Megoldás videó:
-        </para>
-        <para>
-            Megoldás forrása:                
-        </para>
-        <para>
-            Tanulságok, tapasztalatok, magyarázat...
-        </para>
-        <para>
-        Az unáris, azaz egyes számrendszer a legegyszerűbb számrendszer. Nevéből eredően egyes a legnagyobb jegye.
-            Amikor az kezünkön elszámolunk ötig akkor unáris számrendszerben dolgozunk. Ez le is fedi a lényeget, egy k szám
-            átírása unáris számrendszerbe k darab egyes lesz. Például: 5 az annyi, mint 11111.
+            Az unáris számrendszer a nevéből eredően az unáris (1) a legnagyobb számjegy. Alsós iskolákban a számolást segíttette az újjakon való számolás.
+            Mikor leszámoltunk 5-ig az ujjaink segítségével lényegében az is unáris számrendszerben történt. Az unáris Turing gép egységszakaszokban ábrázolja a számokat. Az egységszakasz K szakaszra bontható.
+            Ilyen pl. az 5 egységszakasz alapján 1 szakasz megfelel az 1-es számjegynek. Ezekhez a szakaszokhoz különböző szimbólumokat/jelentéseket rendelhetünk.
+            Legáltalánosabb példa a vonalakkal jelzett 5-ös egységszakaszok.
         </para>
         
         <para>
-        Egy c++ demonstráció:    
+        C++ KÓD:
         </para>
         
         <programlisting language="c++">
             <![CDATA[
             #include <iostream>
 
-void tounar(int a){
-    for(int i=0; i<a; i++)
-        std::cout << "1";
-    
-    std::cout << std::endl;
-}
+            void toUnar(int a)
+            {
+                for(int i=0; i<a; i++)
+                    std::cout << "1" << std::endl;
+            }
 
-int main(){
-    
-    int val;
-    std::cout << "Type a number in decimal." << std::endl;
-    while(std::cin >> val){
-        tounar(val);
-    }
-    
-    return 0;
-}
+            int main()
+            {
+                
+                int val;
+                std::cout << "Type a number in decimal." << std::endl;
 
-]]>
-        </programlisting>
-        
-        <para>
-            A gépünk feladata pontosan ez lenne. Amikor az szalagról az író/olvasó fej beolvas egy decimális számot,
-            akkor egy eljárás által átváltsa unárisba azt.
-        </para>
-        
-        <para>
-        A gépünk első feladata az lenne, hogy a szalagon érkező számot megvizsgálja. El lépked az utolsó számjegy utániig, majd visszalép az utolsóra és
-        elkezd kivonni egyeket. Először az utolsó tagból, majd az utolsó előttiből és így tovább. A folyamat zajlani fog, amíg nulla nem lesz az olvasott szám. A kivont egyeseket elhelyezi a tárban, 
-        az unáris számrendszerbe átváltott számunkat onnan fogjuk tudni kinyerni.
-        
-        </para>
+                while(std::cin >> val)
+                {
+                    toUnar(val);
+                }
+                
+                return 0;
+            }
+
+            ]]>
+            </programlisting>
 
     </section>        
         
@@ -73,29 +64,30 @@ int main(){
         <para>
             Mutass be legalább két környezetfüggő generatív grammatikát, amely ezt a nyelvet generálja!
         </para>
-         <para>
-            A generatív nyelvtan megalkotása Noam Chomsky nyelvész, illetve matematikus nevéhez fűződik.
-            A lentebb látható generatív grammatikák lényege abban rejlik, hogy miképp tudjuk kezdőszimbólumunkból a megadott szabályok segítségével csupán nem terminális jelekből, azaz konstansokból felépíteni a mondtatot.
-        </para>           
+        <para>
+            A generatív nyelvtan megalkotása és elméletének lefektetése Noam Chomsky nyelvész nevéhez fűződik.
+            A lejjebb található kód lényege, hogy miképp tudunk kezdőszimbólumunkból az általunk lefektetett szabálygyűjtemély felhasználásával, konstansokból felépíteni mondatokat.
+        </para>
+                   
         <para>
             Az első:
          <programlisting language="tex"><![CDATA[
          S, X, Y változók 
-a, b, c konstansok
-S - abc, S - aXbc, Xb - bX, Xc - Ybcc, bY - Yb, aY - aaX, aY - aa
+            a, b, c konstansok
+            S - abc, S - aXbc, Xb - bX, Xc - Ybcc, bY - Yb, aY - aaX, aY - aa
 
-	S (S - aXbc)
-	aXbc (Xb - bX)
-	abXc (Xc - Ybcc)
-	abYbcc (bY - Yb)
-	aYbbcc (aY - aaX)
-	aaXbbcc (Xb - bX)
-	aabXbcc (Xb - bX)
-	aabbXcc (Xc - Ybcc)
-	aabbYbccc (bY - Yb)
-	aabYbbccc (bY - Yb)
-	aaYbbbccc (aY - aa)
-	aaabbbccc 
+                S (S - aXbc)
+                aXbc (Xb - bX)
+                abXc (Xc - Ybcc)
+                abYbcc (bY - Yb)
+                aYbbcc (aY - aaX)
+                aaXbbcc (Xb - bX)
+                aabXbcc (Xb - bX)
+                aabbXcc (Xc - Ybcc)
+                aabbYbccc (bY - Yb)
+                aabYbbccc (bY - Yb)
+                aaYbbbccc (aY - aa)
+                aaabbbccc 
         ]]></programlisting> 
             
         </para>
@@ -103,84 +95,27 @@ S - abc, S - aXbc, Xb - bX, Xc - Ybcc, bY - Yb, aY - aaX, aY - aa
             A második:
         <programlisting language="tex"><![CDATA[ 
         A, B, C változók
-a, b, c konstansok
-A - aAB, A - aC, CB - bCc, cB - Bc, C - bc
+        a, b, c konstansok
+        A - aAB, A - aC, CB - bCc, cB - Bc, C - bc
 
-	A (A - aAB)
-	aAB ( A - aAB)
-	aaABB ( A - aAB)
-	aaaABBB ( A - aC)
-	aaaaCBBB (CB - bCc)
-	aaaabCcBB (cB - Bc)
-	aaaabCBcB (cB - Bc)
-	aaaabCBBc (CB - bCc)
-	aaaabbCcBc (cB - Bc)
-	aaaabbCBcc (CB - bCc)
-	aaaabbbCccc (C - bc)
-	aaaabbbbcccc    
+            A (A - aAB)
+            aAB ( A - aAB)
+            aaABB ( A - aAB)
+            aaaABBB ( A - aC)
+            aaaaCBBB (CB - bCc)
+            aaaabCcBB (cB - Bc)
+            aaaabCBcB (cB - Bc)
+            aaaabCBBc (CB - bCc)
+            aaaabbCcBc (cB - Bc)
+            aaaabbCBcc (CB - bCc)
+            aaaabbbCccc (C - bc)
+            aaaabbbbcccc    
                
         ]]></programlisting>     
         </para>
         <para>
-         Miért is nem környezetfüggő? Azért, mert nem fordul olyan elő, hogy a szabályok alakjánál a bal oldalon csak nem terminális jel lenne.
+         Miért is nem környezetfüggő? Azért, mert nincs olyan mondat, hogy a mondat elején csak nem terminális jel van.
         </para>
-    </section>        
-                
-    <section>
-        <title>Hivatkozási nyelv</title>
-        <para>
-            A <citation>KERNIGHANRITCHIE</citation> könyv C referencia-kézikönyv/Utasítások melléklete alapján definiáld 
-            BNF-ben a C utasítás fogalmát!
-            Majd mutass be olyan kódcsipeteket, amelyek adott szabvánnyal nem fordulnak (például C89), mással (például C99) igen.
-        </para>
-        <para>
-            Megoldás videó: 
-        </para>
-        <para>
-            Megoldás forrása:  
-        </para>
-        <para>
-            Tanulságok, tapasztalatok, magyarázat...
-        </para>
-        
-        <para>
-            Először is bemutatnám a kódcsipetet, amely a c89-es szabvánnyal nem fordul le, viszont a c99-esnél nem okoz problémát:
-        </para>
-        <programlisting language="c"><![CDATA[
-            #include <stdio.h>
-
-int main(){
-   
-    int tomb[3]={1,2,3};
-
-    for(int i=0;i<3;i++)
-       printf("%d\n", tomb[i]);
-}
-//ez itt hiba lesz 
-        ]]></programlisting>
-        
-        <para>
-            Fordítás után látható is a hibaüzenet:
-        </para>
-       
-        <screen>
-            <![CDATA[
-mate@ubuntu:~/Asztal$ gcc c89.c -o c89 -std=c89
-c89.c: In function ‘main’:
-c89.c:7:5: error: ‘for’ loop initial declarations are only allowed in C99 or C11 mode
-     for(int i=0;i<3;i++)
-     ^~~
-c89.c:7:5: note: use option -std=c99, -std=gnu99, -std=c11 or -std=gnu11 to compile your code
-c89.c: At top level:
-c89.c:10:1: error: C++ style comments are not allowed in ISO C90
- //ez itt hiba lesz
- ^
-c89.c:10:1: error: (this will be reported only once per input file)
-
-        
-        ]]>
-        </screen>
-
     </section>        
                 
     <section>
@@ -243,95 +178,7 @@ c89.c:10:1: error: (this will be reported only once per input file)
             Nem elfogadható olyan megoldás, amely maga olvassa betűnként a bemenetet, 
             a feladat lényege, hogy lexert használjunk, azaz óriások vállán álljunk és ne kispályázzunk!
         </para>
-         <para>
-            <emphasis role="undeline">A megoldás tömör lényege:</emphasis> Használunk egy programot, ami a megadott utasítások alapján elkészíti nekünk a megoldást.
-        </para>
-        <para>
-            Az általunk írt kód csupán egy .l kiterjesztésű pár soros állomány, amiből a lexer program állítja majd elő a c kódunkat.
-        </para>
-        <para>
-            Ez a következő képpen történik:
-        </para>
-        <itemizedlist>
-            <listitem>
-                <para>
-                    A kódunk elején %{ és %} között megadhatunk C kód részleteket, amiket konkrétan látni akarunk a generált programban.
-                </para>
-                <programlisting><![CDATA[
-%{
-//#include <stdio.h>
-int realnum = 0;
-%}
-                ]]></programlisting>
-                <para>
-                    Az a stadnard input/output könyvátr hozzáadása azért van kikommentelve, mert a streames megoldásban ugyan szerepel, de a sajátomból kihagytam, mivel a lexer által előállított C forrást tanulmányozva
-                    fölöslegesnek tartottam.(A lexer magától include-ol pár gyakran használt header filet, köztük ezt is.)
-                </para>
-            </listitem>
-            <listitem>
-                <para>
-                    Ez után következnek még az első részben a definícók, ami ebben a programban a számjegyek definiálását jelenti. Ezt a nevének és az általa felvehető karaktereknek a megadásával tehető meg.
-                    Miután megadtunk minden szükséges definíciót lezárjuk az első részt %% segítségével.
-                </para>
-                <programlisting><![CDATA[
-digit [0-9]
-%%
-                ]]></programlisting>
-            </listitem>
-            <listitem>
-                <para>
-                    A második részben a megadott definíciókat is felhasználva megadjuk a szabályt/szabályokat ami alapján felismerhetünk a bemenetből bizonyos részeket.Itt csak egy szabály van, ami a valós számok "kinézetét"
-                    írja le általánosan és hogy mit tegyen akkor ha ilyet talál.
-                </para>
-                <programlisting><![CDATA[
-{digit}*(\.{digit}+)? {++realnum_count;
-printf("[realnum: %s - %f]",yytext,atof(yytext));}
-%%
-                ]]></programlisting>
-                <para>
-                    <emphasis role="underline">A valós szám formális megadása:</emphasis> Elől lehet számjegy(digit) 0 vagy több, ezt opcionálisan követheti pont(nem kötelező), de ha van pont, akkor utána muszáj egy vagy több számjegynek utána állnia.
-                </para>
-                <para>
-                    Ha talál ilyet, akkor a számlálót növeljük egyel és kiírjuk a megtalált kifejezést(yytext), valamint az <function>atof()</function> függvény segítségével a stringet lebegőpontos értékké alakítva is kiíratjuk.
-                    Ennek a szekciónak a végét is %%-jel jelöljük.
-                </para>
-            </listitem>
-            <listitem>
-                <para>
-                    Ezek után már csak a főprogram maradt, amiben meghívjuk a lexerünket az <function>yylex()</function> függvénnyel, valamint miután a lexeléssel végeztünk, a megtalált valós számok darabszámát is kiíratjuk.
-                </para>
-                <programlisting><![CDATA[
-int main(){
-    yylex();
-    printf("The number of real numbers: %d",realnum_count);
-    return 0;
-}
-                ]]></programlisting>
-            </listitem>
-        </itemizedlist>
-        <para>
-            Az elkészült kódunkat bele öntjük egy flex nevű programba a következő képpen:
-        </para>
-        <screen>
-lex valos.l -o valos.c
-        </screen>
-        <para>
-            Eredményül egy C forráskódot kapunk, ami az általunk írt .l kódnál jelentősen hosszabb(1700+ sor). Már csak arányait tekintve is rengeteg  munkát spóroltunk meg vele.
-        </para>
-        <para>
-            A kapott C kódból a gcc-vel lefordítva előállíthatjuk a futtatható állományunkat így:
-        </para>
-        <screen>
-gcc valos.c -o valos -lfl
-        </screen>
-        <para>
-            A -lfl kapcsolóra a lexerünk miatt van szükség.
-        </para>
-        <para>
-            Hogy mit jelent az óriások vállán állni és nem kispályázni? Ez az általunk megírt lex kód és a valós generált programkód közötti viszont reprezentálja. Ötletes!
-        </para>
 
-        
     </section>                     
 
     <section>
@@ -340,13 +187,8 @@ gcc valos.c -o valos -lfl
             Lexelj össze egy l33t ciphert!
         </para>
         <para>
-            Megoldás videó: 
-        </para>
-        <para>
-            Megoldás forrása:  
-        </para>
-        <para>
-            Tanulságok, tapasztalatok, magyarázat...
+        A megadott egyszerű szabályok segítségével elő tudunk állítani egy olyan új kimenetet, ahol különféle
+        karakterek(láncok) kicserélődnek a szabályban megadott karakterekre. Minden a szabályban specifikált bemenetre megcsinálja a cserét egyéb esetekben leírja a karakterláncot változatlanul.
         </para>
         <programlisting><![CDATA[
         /*
@@ -470,6 +312,11 @@ gcc valos.c -o valos -lfl
 
                 ]]>
         </programlisting>
+        <para>Kimenet lehet például:</para>
+        <screen>
+        ~ hello
+        ~ h3ll0
+        </screen>
     </section>                     
 
     <section>
@@ -502,15 +349,15 @@ gcc valos.c -o valos -lfl
             </listitem>
             <listitem>                                    
                 <programlisting><![CDATA[for(i=0; i<5; ++i)]]></programlisting>  
-                <para>A forciklus fejlécébe hiányzik az i deklaráció, ha ez megvan akkor ok.</para>          
+                <para>A fejlécébe hiányzik az i deklaráció, ha ez megvan akkor működik.</para>          
             </listitem>
             <listitem>                                    
                 <programlisting><![CDATA[for(i=0; i<5; i++)]]></programlisting>    
-                <para>A forciklus fejlécébe hiányzik az i deklaráció, ha ez megvan akkor ok.</para>        
+                <para>A fejlécébe hiányzik az i deklaráció, ha ez megvan akkor működik.</para>        
             </listitem>
             <listitem>                                    
                 <programlisting><![CDATA[for(i=0; i<5; tomb[i] = i++)]]></programlisting>
-                <para>A kód hibamentes ha már létrehoztuk a látható változókat és mutatókat.</para>           
+                <para>A kód hibamentes, mert már létrehoztuk a változókat és mutatókat.</para>           
             </listitem>
             <listitem>                                    
 
@@ -527,13 +374,13 @@ gcc valos.c -o valos -lfl
             <listitem>                                    
                 <programlisting><![CDATA[printf("%d %d", f(a), a);]]></programlisting> 
                 <para>
-			A printf ki fogja írni az f függvény visszatérési értékét a-ra, és a értékét.
+			        A printf ki fogja írni az f függvény visszatérési értékét a-ra, és a értékét.
                 </para>           
             </listitem>
             <listitem>                                    
                 <programlisting><![CDATA[printf("%d %d", f(&a), a);]]></programlisting>
                 <para>
-		    A kiiratás megtörténik viszont az f függvény most az a változó memória címévél fog dolgozni nem az a értékével.
+		            A kiiratás megtörténik viszont az f függvény most az a változó memória címévél fog dolgozni nem az a értékével.
                 </para>             
             </listitem>
         </orderedlist>
@@ -699,16 +546,6 @@ $(\exists y \forall x (y<x) \supset \neg (x \text{ prím}))$
             </listitem>           
         </itemizedlist>       
 
-
-        <para>
-            Megoldás videó: 
-        </para>
-        <para>
-            Megoldás forrása:  
-        </para>
-        <para>
-            Tanulságok, tapasztalatok, magyarázat...
-        </para>
     </section>                     
 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         

@@ -149,8 +149,18 @@ false]]></screen>
                 </listitem>
             </itemizedlist>
             akkor most hogy fog működni? Sehogy, mert ilyen <function>Lefagy</function>
-            függvényt, azaz a T100 program nem is létezik.                
+            függvényt, azaz a T100 program nem is létezik.       
+                     
         </para>
+        <para>
+            A lefagy vagy nem fagy le program lényegében arról szól, hogy képesek vagyunk e olyan programot írni, ami eldönti egy programról, hogy be fog-e fagyni.
+            Alan Turing matematikus és programozó 1936 decemberében bebizonyította, hogy ezen program írása nem lehetséges. Technikailag egy kisebb programról el tudjuk dönteni, hogy
+            van-e benne például egy végtelen ciklus, ami a program fagyásához vezethet. Azonban ha nagyobb és bonyolultabb programba gondolkodunk ez szinte lehetetlen.
+        </para>
+        <para>
+            Talán a jövőben megoldható lesz ez a probléma, ki tudja.
+        </para>
+
     </section>        
                 
     <section>
@@ -166,22 +176,22 @@ false]]></screen>
         <para>I. Segédváltozós csere:</para>
         <programlisting language="c">
         <![CDATA[
-    #include <stdio.h>
+        #include <stdio.h>
 
-    int main ()
-    {
-        int a = 99; int b = 45;
+        int main ()
+        {
+            int a = 99; int b = 45;
 
-        int c = a;
-        a = b;
-        b = c;
+            int c = a;
+            a = b;
+            b = c;
 
-        printf("A értéke: %d\n", a);
-        printf("B értéke: %d\n", b);
+            printf("A értéke: %d\n", a);
+            printf("B értéke: %d\n", b);
 
-        return 0;
-    }
- ]]>
+            return 0;
+        }
+    ]]>
         </programlisting>
         <para>
         Rém egyszerű a történet.
@@ -221,6 +231,9 @@ false]]></screen>
             Először if-ekkel, majd bármiféle logikai utasítás vagy kifejezés
             nasználata nélkül írj egy olyan programot, ami egy labdát pattogtat a karakteres konzolon! (Hogy mit értek
             pattogtatás alatt, alább láthatod a videókon.)
+        </para>
+        <para>
+            <emphasis role="strong">Ebben a feladatban Nagy Martin-t tutoráltam!</emphasis>
         </para>
         <para>
             Labda pattogtatásához elsőként a bejárandó területet kell definiálnunk a programban. 
@@ -344,6 +357,7 @@ false]]></screen>
     }
  ]]>
         </programlisting>
+        
     </section>                     
 
     <section>
@@ -352,71 +366,106 @@ false]]></screen>
             Írj olyan C programot, amely egy 4 honlapból álló hálózatra kiszámolja a négy lap Page-Rank 
             értékét!
         </para>
+        <para>
+            Középiskolában a (leg)népszerűbbnek számít az az ember, akinek sok barátja és ismerőse van. Kissé közhely de igaz.
+            Ezen példát továbbgondolva rájöhetünk a hasonlóságra, ha az interneten található weboldalak népszerűségét figyeljük meg.
+            Népszerű, ha az adott weboldara sok-sok link mutat. Ezen népszerűségi rangsorolást a Google-féle PageRank algoritmus végzi.
+        </para>
+        <para>
+            Az, hogy milyen "népszerű" egy adott oldal a PageRank algoritmus által hozzárendelt érték adja meg. Minél nagyobb annál népszerűbb.
+            Továbbiakban tisztába kell lenni azzal, hogy egy weboldara kétféle link definiált. Vannak a rámutató (pointing) linkek, illetve a kimenő (outgoing) linkek.
+            Pointing link az adott weboldara mutató linkek. Az outgoing linkek azon weboldal, ahova a weboldalunk mutat.
+        </para>
+        <figure>
+            <title>PageRank algoritmus</title>
+            <mediaobject>
+                <imageobject>
+                <imagedata fileref="/home/dekanyrobert/Dokumentumok/prog1/drob-bhax-textbook/PR.png" format="PNG"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        <para>
+            Elsőkörbe megírjuk a megjelenítő <function>kiir</function> függvényt. A paramétereként megkapott double vektoron végigiterál, majd kiiírja a PageRank értékeket az output-ra.
+        </para>
         <programlisting language="c">
         <![CDATA[
-    #include <stdio.h>
-    #include <math.h>
-    #include "std_lib_facilities.h"
+            #include <stdio.h>
+            #include <math.h>
+            #include "std_lib_facilities.h"
 
-    void kiir (vector<double> tomb)
-    {
+            void kiir (vector<double> tomb)
+            {
+                int i;
+                for (i=0; i < tomb.size(); i++)
+                printf("PageRank [%d]: %lf\n", i, tomb[i]);
+            }
+        ]]>
+        </programlisting>
+        <para>
+            <function>tavolsag</function> függvényt a paraméterben megkapott két vectorból számol egy közelítő távolságértéket.
+            Ezt az értéket fogjuk vizsgálni a továbbiakban. Ha ez az érték közelíti vagy nagyobb a 0.00001 akkor nincs értelme tovább iterálni az a PR értékeket.
+        </para>
+        <programlisting language="c">
+        <![CDATA[
+            double tavolsag(vector<double> pagerank,vector<double> pagerank_temp)
+            {
+                double tav = 0.0;
+                int i;
+                for(i=0;i < pagerank.size();i++)
+                tav +=abs(pagerank[i] - pagerank_temp[i]);
+                return tav;
+            }
+        ]]>
+        </programlisting>
+        <para>
+            A main függvényben történik a program lényegi része. Elsőként deklarálunk egy 4x4-es mátrixot. Ebbe lesz eltárolva a mutató linkek szerinti értékek amikkel dolgozni fogunk.
+            Egy PR vektorban fogjuk eltárolni az épp aktuális PageRank értékeket. A PRv vektorban az egyes iterációknál meghatározott PageRank értékek. Alap esetben mind 1/4, mert 4 weblapunk van.
+            Egy végtelen ciklusban fogjuk végrehajtani az egyes iterációs lépéseket. Minden iterációban végigmegyünk a PR illetve a PRv elemeken és mátrixszorzással kiszámoltatjuk a PageRank értékeket.
+            Ezeket a lépéseket addig ismételgetjük, amíg a <function>tavolsag</function> függvény vissza nem tér a megfelelő értékkel. A végén pedig a <function>kiíír</function> -el kiiratunk.
+        </para>
+        <programlisting language="c">
+        <![CDATA[
+            int main(void)
+            {
+            double L[4][4] =
+            {
+                {0.0, 0.0, 1.0 / 3.0, 0.0},
+                {1.0, 1.0 / 2.0, 1.0 / 3.0, 1.0},
+                {0.0, 1.0 / 2.0, 0.0, 0.0},
+                {0.0, 0.0, 1.0 / 3.0, 0.0}
+            };
 
-        //iterátorral
-        int i;
-        for (i=0; i < tomb.size(); i++)
-        printf("PageRank [%d]: %lf\n", i, tomb[i]);
-    }
+            vector<double> PR = {0.0, 0.0, 0.0, 0.0};
+            vector<double> PRv = {1.0 / 4.0, 1.0 / 4.0, 1.0 / 4.0, 1.0 / 4.0};
 
-    double tavolsag(vector<double> pagerank,vector<double> pagerank_temp)
-    {
-        double tav = 0.0;
-        int i;
-        for(i=0;i < pagerank.size();i++)
-        tav +=abs(pagerank[i] - pagerank_temp[i]);
-        return tav;
-    }
+            long int i,j,h;
+            i=0; j=0; h=5;
 
-    int main(void)
-    {
-    double L[4][4] =
-    {
-        {0.0, 0.0, 1.0 / 3.0, 0.0},
-        {1.0, 1.0 / 2.0, 1.0 / 3.0, 1.0},
-        {0.0, 1.0 / 2.0, 0.0, 0.0},
-        {0.0, 0.0, 1.0 / 3.0, 0.0}
-    };
+            for (;;)
+            {
+                for(i=0;i<4;i++)
+                PR[i] = PRv[i];
 
-    vector<double> PR = {0.0, 0.0, 0.0, 0.0};
-    vector<double> PRv = {1.0 / 4.0, 1.0 / 4.0, 1.0 / 4.0, 1.0 / 4.0};
+                for (i=0;i<4;i++)
+                {
+                    double temp=0;
 
-    long int i,j,h;
-    i=0; j=0; h=5;
+                    for (j=0;j<4;j++)
+                        temp+=L[i][j]*PR[j];
 
-    for (;;)
-    {
-        for(i=0;i<4;i++)
-        PR[i] = PRv[i];
+                    PRv[i]=temp;
+                }
 
-        for (i=0;i<4;i++)
-        {
-            double temp=0;
+                if ( tavolsag(PR,PRv) < 0.00001)
+                break;
+            }
 
-            for (j=0;j<4;j++)
-                temp+=L[i][j]*PR[j];
+            kiir (PR);
 
-            PRv[i]=temp;
-        }
+            return 0;
 
-        if ( tavolsag(PR,PRv) < 0.00001)
-        break;
-    }
-
-    kiir (PR);
-
-    return 0;
-
-    }
- ]]>
+            }
+        ]]>
         </programlisting>
         
     </section>
@@ -426,45 +475,68 @@ false]]></screen>
         <para>
             Írj R szimulációt a Brun tétel demonstrálására!
         </para>
+        <para>
+            <emphasis role="strong">Ebben a feladatban Nagy Martin-t tutoráltam!</emphasis>
+        </para>
+        <para>
+            Bizonyára mindenki hallott már az prímek fogalmáról. Ezek olyan számok amelyek 1-el és önmagukkal oszthatóak csak.
+            Az ikerprímek ezen prímszámokból vett prímek, amelyeknek különbsége kettő. 
+            A prímszámok olyan számok, melyek csak önmagukkal és eggyel osztva nem adnak maradékot. Az iker-
+            prímek pedig olyan príszmámok, melyek különbsége kettő.
+        </para>
+        <para> 
+            A feladatunk a Brun tétel értelmezéséről és felhasználásáról szól.
+            A Brun tétel kimondja, hogy az ikerprímszámok reciprokát ha elkezdjük összeadogatni akkor az így kapott sor egy Brun-konstanshoz fog konvergálni.
+            Ezen tétel mentél elkészítjük programunkat Matlabban majd ábrázoljuk.
+        </para>
         <programlisting language="r">
         <![CDATA[
-    #   Copyright (C) 2019  Dr. Norbert Bátfai, nbatfai@gmail.com
-    #
-    #   This program is free software: you can redistribute it and/or modify
-    #   it under the terms of the GNU General Public License as published by
-    #   the Free Software Foundation, either version 3 of the License, or
-    #   (at your option) any later version.
-    #
-    #   This program is distributed in the hope that it will be useful,
-    #   but WITHOUT ANY WARRANTY; without even the implied warranty of
-    #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    #   GNU General Public License for more details.
-    #
-    #   You should have received a copy of the GNU General Public License
-    #   along with this program.  If not, see <http://www.gnu.org/licenses/>
+            #   Copyright (C) 2019  Dr. Norbert Bátfai, nbatfai@gmail.com
+            #
+            #   This program is free software: you can redistribute it and/or modify
+            #   it under the terms of the GNU General Public License as published by
+            #   the Free Software Foundation, either version 3 of the License, or
+            #   (at your option) any later version.
+            #
+            #   This program is distributed in the hope that it will be useful,
+            #   but WITHOUT ANY WARRANTY; without even the implied warranty of
+            #   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+            #   GNU General Public License for more details.
+            #
+            #   You should have received a copy of the GNU General Public License
+            #   along with this program.  If not, see <http://www.gnu.org/licenses/>
 
-    library(matlab)
+            library(matlab)
 
-    stp <- function(x){
+            stp <- function(x){
 
-        primes = primes(x)
-        diff = primes[2:length(primes)]-primes[1:length(primes)-1]
-        idx = which(diff==2)
-        t1primes = primes[idx]
-        t2primes = primes[idx]+2
-        rt1plust2 = 1/t1primes+1/t2primes
-        return(sum(rt1plust2))
-    }
+                primes = primes(x)
+                diff = primes[2:length(primes)]-primes[1:length(primes)-1]
+                idx = which(diff==2)
+                t1primes = primes[idx]
+                t2primes = primes[idx]+2
+                rt1plust2 = 1/t1primes+1/t2primes
+                return(sum(rt1plust2))
+            }
 
-    x=seq(13, 1000000, by=10000)
-    y=sapply(x, FUN = stp)
-    plot(x,y,type="b")
- ]]>
+            x=seq(13, 1000000, by=10000)
+            y=sapply(x, FUN = stp)
+            plot(x,y,type="b")
+        ]]>
         </programlisting>
-        <para>Kidolgozás később!</para>
         <para>
-            Megoldás videó: <link xlink:href="https://youtu.be/xbYhp9G6VqQ">https://youtu.be/xbYhp9G6VqQ</link>
+            A function(X) függvény a prímeken végigiterál. Megnézi a külöbségüket, majd ha az kettő akkor eltárolja a két ikerprímszámot. Ezután összeadjuk a számokat majd felhasználjuk.
+            Végén pedig a plot parancssal megrajzoltatjuk a grafikont.
         </para>
+        <figure>
+            <title>Bátfai Tanár úr ábrája a Brun-tétel abrázolásáról.</title>
+            <mediaobject>
+                <imageobject>
+                <imagedata fileref="BrunKorok.png" format="PNG"/>
+                </imageobject>
+            </mediaobject>
+        </figure>
+        
     </section>
     
     <section xml:id="bhax-textbook-feladatok-turing.MontyHall">

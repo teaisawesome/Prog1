@@ -34,4 +34,77 @@
             Aktualizálás, javítások.
         </revremark>
     </revision>
+    <revision>
+        <revnumber>0.0.5</revnumber>
+        <date>2019-02-25</date>
+        <authorinitials>dekrob</authorinitials>
+        <revremark>
+            Turing csokor kész.
+        </revremark>
+    </revision>
+    <revision>
+        <revnumber>0.0.6</revnumber>
+        <date>2019-03-04</date>
+        <authorinitials>dekrob</authorinitials>
+        <revremark>
+            Chomsky csokor elkezdve/kész.
+        </revremark>
+    </revision>
+    <revision>
+        <revnumber>0.0.7</revnumber>
+        <date>2019-03-11</date>
+        <authorinitials>dekrob</authorinitials>
+        <revremark>
+            Caesar csokor elkezdve.
+        </revremark>
+    </revision>
+    <revision>
+        <revnumber>0.0.8</revnumber>
+        <date>2019-03-20</date>
+        <authorinitials>dekrob</authorinitials>
+        <revremark>
+            Mandelbrot  csokor kész.
+        </revremark>
+    </revision>
+    <revision>
+        <revnumber>0.0.9</revnumber>
+        <date>2019-03-24</date>
+        <authorinitials>dekrob</authorinitials>
+        <revremark>
+            Guttenberg  csokor elkezdve.
+        </revremark>
+    </revision>
+    <revision>
+        <revnumber>0.1.0</revnumber>
+        <date>2019-04-03</date>
+        <authorinitials>dekrob</authorinitials>
+        <revremark>
+            Welch  csokor elkezdve majdnem kész.
+        </revremark>
+    </revision>
+    <revision>
+        <revnumber>0.1.1</revnumber>
+        <date>2019-04-08</date>
+        <authorinitials>dekrob</authorinitials>
+        <revremark>
+            Conway / Swarzenegger csokor elkezdve.
+        </revremark>
+    </revision>
+    <revision>
+        <revnumber>0.1.2</revnumber>
+        <date>2019-04-16</date>
+        <authorinitials>dekrob</authorinitials>
+        <revremark>
+            Gutenberg folytatás.
+        </revremark>
+    </revision>
+    <revision>
+        <revnumber>0.1.3</revnumber>
+        <date>2019-05-10</date>
+        <authorinitials>dekrob</authorinitials>
+        <revremark>
+            Utolsó simítások a könyvön. Szerkesztések.
+        </revremark>
+    </revision>
+    
 </revhistory>

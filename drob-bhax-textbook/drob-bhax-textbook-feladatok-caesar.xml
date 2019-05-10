@@ -6,84 +6,87 @@
         </keywordset>
     </info>
     <section>
-        <title><type>int ***</type> háromszögmátrix</title>
+        <title><type>double **</type> háromszögmátrix</title>
         <para>
-           
+            A feladat megoldásánál fontos tisztába lenni, hogy mi is az a háromszögmátrix. Nos, egy olyan mátrix, ahol a főátló felett (felső háromszögmátrix) vagy alatt (alsó háromszögmátrix) csupa nulla szerepel.
+            A feladatben egy megadott 5x5 ös kétdimenziós tömböt szeretnénk megvalósítani. A memória foglalásokat a alsó háromszögmátrix értékei szerint elvégezzük.
+            Ehhez egy ábra készült, ami bemutatja mit "ügyködünk" a memóriában. Az ábrát Bátfai Norbert készítette majd én szerkesztettek a saját értékeimmel.
+            Ha jobban megnézzük akkor hasonlít a mátrix szerkezetéhez a memória foglalás. Ezt is akarta szemléltetni a feladat, hogy a memóriát nem csak egy szalagként tudjuk elképzelni.
+        </para>
+        <figure>
+            <title>Bátfai Norbert ábrája a double**háromszögmátrixról az én saját címeimmel.</title>
+            <mediaobject>
+                <imageobject>
+                <imagedata fileref="haromszogmatrix.png" format="PNG"/>
+                </imageobject>
+            </mediaobject>
+        </figure>   
+        <para>
+            A double **háromszögmátrix C változata:
         </para>
         <programlisting language="c"><![CDATA[
-    #include <stdio.h>
-    #include <stdlib.h>
+            #include <stdio.h>
+            #include <stdlib.h>
 
-    int
-    main ()
-    {
-        int nr = 5;
-        double **tm;
-        
-        printf("%p\n", &tm);
-        
-        if ((tm = (double **) malloc (nr * sizeof (double *))) == NULL)
-        {
-            return -1;
-        }
-
-        printf("%p\n", tm);
-        
-        for (int i = 0; i < nr; ++i)
-        {
-            if ((tm[i] = (double *) malloc ((i + 1) * sizeof (double))) == NULL)
+            int
+            main ()
             {
-                return -1;
+                int nr = 5;
+                double **tm;
+                
+                printf("%p\n", &tm);
+                
+                if ((tm = (double **) malloc (nr * sizeof (double *))) == NULL)
+                {
+                    return -1;
+                }
+
+                printf("%p\n", tm);
+                
+                for (int i = 0; i < nr; ++i)
+                {
+                    if ((tm[i] = (double *) malloc ((i + 1) * sizeof (double))) == NULL)
+                    {
+                        return -1;
+                    }
+
+                }
+
+                printf("%p\n", tm[0]);    
+                
+                for (int i = 0; i < nr; ++i)
+                    for (int j = 0; j < i + 1; ++j)
+                        tm[i][j] = i * (i + 1) / 2 + j;
+
+                for (int i = 0; i < nr; ++i)
+                {
+                    for (int j = 0; j < i + 1; ++j)
+                        printf ("%f, ", tm[i][j]);
+                    printf ("\n");
+                }
+
+                tm[3][0] = 42.0;
+                (*(tm + 3))[1] = 43.0;	// mi van, ha itt hiányzik a külső ()
+                *(tm[3] + 2) = 44.0;
+                *(*(tm + 3) + 3) = 45.0;
+
+                for (int i = 0; i < nr; ++i)
+                {
+                    for (int j = 0; j < i + 1; ++j)
+                        printf ("%f, ", tm[i][j]);
+                    printf ("\n");
+                }
+
+                for (int i = 0; i < nr; ++i)
+                    free (tm[i]);
+
+                free (tm);
+
+                return 0;
             }
 
-        }
-
-        printf("%p\n", tm[0]);    
-        
-        for (int i = 0; i < nr; ++i)
-            for (int j = 0; j < i + 1; ++j)
-                tm[i][j] = i * (i + 1) / 2 + j;
-
-        for (int i = 0; i < nr; ++i)
-        {
-            for (int j = 0; j < i + 1; ++j)
-                printf ("%f, ", tm[i][j]);
-            printf ("\n");
-        }
-
-        tm[3][0] = 42.0;
-        (*(tm + 3))[1] = 43.0;	// mi van, ha itt hiányzik a külső ()
-        *(tm[3] + 2) = 44.0;
-        *(*(tm + 3) + 3) = 45.0;
-
-        for (int i = 0; i < nr; ++i)
-        {
-            for (int j = 0; j < i + 1; ++j)
-                printf ("%f, ", tm[i][j]);
-            printf ("\n");
-        }
-
-        for (int i = 0; i < nr; ++i)
-            free (tm[i]);
-
-        free (tm);
-
-        return 0;
-    }
-
                 ]]></programlisting>
-        <para>
-            Csak a nem nulla értékeket tároljuk, mivel a háromszöghöz felesleges ezeket az értékeket mutatni, így nem négyzet alakot kapunk.
-            Egy 'i' sornak 'i+1' oszlopot foglalunk le.
-            Elsőnek deklaráljuk a változóinkat. 'nr'-ben a háromszögmátrix sorainak a kívánt számát állítjuk le. '**tm' egy mutató, ami a tömbünk első elemére mutat, ami a double* mutatokra, tehát a tömb soraira mutat.
-    
-        </para>
-        <para>
-            Megoldás forrása:                
-        </para>
-        <para>
-            Tanulságok, tapasztalatok, magyarázat...
-        </para>            
+
     </section>        
     <section>
         <title>C EXOR titkosító</title>
@@ -220,53 +223,12 @@
 			}
 		}
 
-                ]]></programlisting>
+        ]]></programlisting>
         <para>
-            Megoldás videó:
-        </para>
-        <para>
-            Megoldás forrása:                
-        </para>
-        <para>
-            Tanulságok, tapasztalatok, magyarázat...
-        </para> <programlisting language="java"><![CDATA[
-        public class ExorTitkosító
-        {
-            public ExorTitkosító(String kulcsSzöveg,
-                java.io.InputStream bejövőCsatorna,
-                java.io.OutputStream kimenőCsatorna)
-                throws java.io.IOException {
-
-            byte [] kulcs = kulcsSzöveg.getBytes();
-            byte [] buffer = new byte[256];
-            int kulcsIndex = 0;
-            int olvasottBájtok = 0;
-
-            while((olvasottBájtok =
-                    bejövőCsatorna.read(buffer)) != -1) {
-
-                for(int i=0; i<olvasottBájtok; ++i) {
-                    buffer[i] = (byte)(buffer[i] ^ kulcs[kulcsIndex]);
-                    kulcsIndex = (kulcsIndex+1) % kulcs.length;
-            }
-            
-            kimenőCsatorna.write(buffer, 0, olvasottBájtok);
-
-            }
-        }
-		public static void main(String[] args)
-        {
-			try
-            {
-				new ExorTitkosító(args[0], System.in, System.out);
-			}
-            catch(java.io.IOException e)
-            {
-				e.printStackTrace();
-			}
-		}
-
-                ]]></programlisting>           
+            EXOR titkosítás Java nyelven megvalósítva. Itt specifikusan Java megvalósításokat használunk az implementációban de a kód sok része átültethető C-ből.
+            Itt is a kulcs segítségével össze EXOR-ozzuk a szöveget. Majd léptetjük a kulcsindexet.
+            A titkosított szöveget a <function>write</function> segítségével kiiírjük egy külön file-ba.
+        </para>           
     </section>        
     <section>
         <title>C EXOR törő</title>
@@ -391,11 +353,9 @@
             Az exor törő minden esetben egy karakter sorozatból megadott kulcs alapján próbálja visszafejteni a szöveget.
             Bruteforce módszert használva minden lehetséges kombinációval kipróbálva töri fel. A tiszta szöveg előállítását is egy algoritmus végzi, ami egyes szavak alapján megpróbál értelmes szöveget visszafejteni.
         </para>
-        <para>
-            További magyarázat, kidolgozás (később):
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Omnis delectus temporibus obcaecati eveniet saepe expedita dolorem ratione natus veniam asperiores, commodi pariatur iusto accusamus ut sed unde. Magni, reprehenderit voluptates. Lorem ipsum dolor sit amet consectetur adipisicing elit. Ex illo officia asperiores est itaque vel totam, quia voluptatibus dolores ducimus inventore alias id, nesciunt ab possimus harum quis error quod!
-        </para>       
-    </section>        
+       
+    </section> 
+
     <section>
         <title>Neurális OR, AND és EXOR kapu</title>
         <para>
@@ -410,7 +370,8 @@
         <para>
             Tanulságok, tapasztalatok, magyarázat...
         </para>            
-    </section>        
+    </section>
+
     <section>
         <title>Hiba-visszaterjesztéses perceptron</title>
         <para>
